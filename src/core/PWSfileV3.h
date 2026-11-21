@@ -47,6 +47,8 @@ public:
   unsigned char m_key[32];
   HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> m_hmac;
   CUTF8Conv m_utf8conv;
+  bool m_eofSeen;    // EOF marker read: only the HMAC may follow
+  bool m_readFailed; // data was skipped that the HMAC doesn't cover
   virtual size_t WriteCBC(unsigned char type, const StringX &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
                           size_t length);

@@ -117,6 +117,7 @@ public:
   uint32 m_nHashIters; // mainly for single-user compatibility.
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> m_hmac; // L
+  bool m_readFailed; // data was skipped that the HMAC doesn't cover
   CUTF8Conv m_utf8conv;
   // Forward declaration of functors:
   struct KeyBlockWriter;

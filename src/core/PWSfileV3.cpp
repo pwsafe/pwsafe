@@ -66,7 +66,8 @@ static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F'};
 
 PWSfileV3::PWSfileV3(const StringX &filename, RWmode mode, VERSION version)
-: PWSfile(filename, mode, version), m_nHashIters(0)
+: PWSfile(filename, mode, version), m_nHashIters(0),
+  m_eofSeen(false), m_readFailed(false)
 {
   m_IV = m_ipthing;
   m_terminal = TERMINAL_BLOCK;
@@ -139,7 +140,8 @@ int PWSfileV3::Close()
     // We're here *after* TERMINAL_BLOCK has been read
     // and detected (by _readcbc) - just read hmac & verify
     unsigned char d[SHA256::HASHLEN];
-    if (fread(d, sizeof(d), 1, m_fd) == 1 &&
+    if (!m_readFailed &&
+        fread(d, sizeof(d), 1, m_fd) == 1 &&
         memcmp(d, digest, SHA256::HASHLEN) == 0)
       return PWSfile::Close();
     else {
@@ -297,6 +299,15 @@ size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
   if (numRead > 0) {
     m_hmac.Update(data, static_cast<unsigned long>(length));
   }
+
+  // A block that couldn't be read as a field has still been consumed
+  // (and is the CBC IV of the next one), and an EOF marker followed by
+  // more data has been skipped. The HMAC covers neither, so remember it
+  // for Close() rather than let the file pass as intact.
+  if (numRead == 0 || m_eofSeen)
+    m_readFailed = true;
+  if (numRead == static_cast<size_t>(-1))
+    m_eofSeen = true;
 
   return numRead;
 }

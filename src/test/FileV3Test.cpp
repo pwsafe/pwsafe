@@ -177,6 +177,60 @@ TEST_F(FileV3Test, HeaderReadFailure)
   }
 }
 
+TEST_F(FileV3Test, InsertedBlockFailsDigest)
+{
+  // The HMAC covers field data only. A ciphertext block inserted in front
+  // of a field doesn't decrypt to a valid field header; it must not be
+  // silently skipped, since as the CBC IV of the next block it lets an
+  // attacker without the key flip bits in that field's type byte.
+  CItemData ci;
+  ci.CreateUUID();
+  ci.SetTitle(_T("picollo"));
+  ci.SetPassword(_T("tiny-passw"));
+  ci.SetNotes(_T("0123456789abcdef")); // >= 16 bytes, so it can pass as a UUID
+
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(ci));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+
+  FILE *fp = pws_os::FOpen(fname, _T("rb"));
+  ASSERT_NE(nullptr, fp);
+  const size_t fileLength = pws_os::fileLength(fp);
+  std::vector<unsigned char> contents(fileLength);
+  ASSERT_EQ(contents.size(), fread(contents.data(), 1, contents.size(), fp));
+  ASSERT_EQ(0, pws_os::FClose(fp));
+
+  // From the end: HMAC, terminal marker, END field, then the two-block
+  // NOTES field, which is what we cut the record at.
+  const size_t BS = TwoFish::BLOCKSIZE;
+  ASSERT_GT(fileLength, SHA256::HASHLEN + 5 * BS);
+  const size_t notesPos = fileLength - SHA256::HASHLEN - 2 * BS - 2 * BS;
+  // A copy of the preceding block, with the type byte of the next block
+  // re-typed from NOTES to UUID through the IV.
+  std::vector<unsigned char> block(contents.begin() + notesPos - BS,
+                                   contents.begin() + notesPos);
+  block[sizeof(int32)] ^= CItemData::NOTES ^ CItemData::UUID;
+  contents.insert(contents.begin() + notesPos, block.begin(), block.end());
+
+  fp = pws_os::FOpen(fname, _T("wb"));
+  ASSERT_NE(nullptr, fp);
+  ASSERT_EQ(contents.size(), fwrite(contents.data(), 1, contents.size(), fp));
+  ASSERT_EQ(0, pws_os::FClose(fp));
+
+  PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  // Read through to the end as PWScore::ReadFile() does, then the
+  // integrity check must fail whatever records came out of it.
+  int status;
+  int emergencyExit = 16;
+  do {
+    status = fr.ReadRecord(item);
+  } while (status == PWSfile::SUCCESS && --emergencyExit > 0);
+  EXPECT_EQ(PWSfile::END_OF_FILE, status);
+  EXPECT_EQ(PWSfile::BAD_DIGEST, fr.Close());
+}
+
 TEST_F(FileV3Test, ItemTest)
 {
   PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
