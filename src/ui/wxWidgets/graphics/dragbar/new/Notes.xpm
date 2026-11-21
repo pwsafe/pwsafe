@@ -1,10 +1,9 @@
 /* XPM */
 static const char * const Notes_xpm[] = {
 /* columns rows colors chars-per-pixel */
-"16 16 124 2",
+"16 16 123 2",
 /* colors */
 "  	c None",
-". 	c #fbf928",
 "X 	c #fedfb6",
 "o 	c #fad2a2",
 "O 	c #f9d19c",
@@ -130,8 +129,8 @@ static const char * const Notes_xpm[] = {
 /* pixels */
 "                                ",
 "                                ",
-"  . X o O + @ # $ % & * = -     ",
-".   ; : : : : : > , : : , <     ",
+"    X o O + @ # $ % & * = -     ",
+"    ; : : : : : > , : : , <     ",
 "    1 2 3 3 4 5 6 6 7 7 8 9     ",
 "    0 q w e r t y u i p a s     ",
 "    d f g r h j k l p z x c     ",
@@ -142,5 +141,5 @@ static const char * const Notes_xpm[] = {
 "    |  ...X.o.O.Q ] +.@.#.$.    ",
 "    %.&.*.=.-.;.:.>.{ ,.<.1.    ",
 "    2.3.4.5.6.7.8.9.0.q.w.e.    ",
-"  .                       .     ",
-".                       .       "};
+"                                ",
+"                                "};
