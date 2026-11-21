@@ -976,6 +976,10 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
     is >> type >> index;
     if (is.eof())
       break;
+    // index is used as an array subscript below - a negative or unparsable
+    // one can only come from a corrupt or malicious preference string
+    if (is.fail() || index < 0)
+      break;
 
     switch (type) {
       case TCHAR('B'):
