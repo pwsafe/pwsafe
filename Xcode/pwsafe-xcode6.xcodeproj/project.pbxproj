@@ -426,7 +426,7 @@
 		57E952192DE93B7A00DE9640 /* text1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = text1.txt; sourceTree = "<group>"; };
 		57E9521B2DE93B7A00DE9640 /* FileEncDecTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileEncDecTest.cpp; path = ../src/test/FileEncDecTest.cpp; sourceTree = SOURCE_ROOT; };
 		57E9521C2DE93B7A00DE9640 /* FileV3Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileV3Test.cpp; path = ../src/test/FileV3Test.cpp; sourceTree = SOURCE_ROOT; };
-		57E9521D2DE93B7A00DE9640 /* FileV4Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileV4Test.cpp; path = ../src/test/FileV4Test.cpp; sourceTree = SOURCE_ROOT; };
+		57E9521D2DE93B7A00DE9640 /* FileV4Test.cpp */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = FileV4Test.cpp; path = ../src/test/FileV4Test.cpp; sourceTree = SOURCE_ROOT; tabWidth = 2; };
 		57E9521E2DE93B7A00DE9640 /* HMAC_SHA1Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMAC_SHA1Test.cpp; path = ../src/test/HMAC_SHA1Test.cpp; sourceTree = SOURCE_ROOT; };
 		57E9521F2DE93B7A00DE9640 /* HMAC_SHA256Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMAC_SHA256Test.cpp; path = ../src/test/HMAC_SHA256Test.cpp; sourceTree = SOURCE_ROOT; };
 		57E952202DE93B7A00DE9640 /* ImportTextTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ImportTextTest.cpp; path = ../src/test/ImportTextTest.cpp; sourceTree = SOURCE_ROOT; };
