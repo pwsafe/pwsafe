@@ -669,4 +669,7 @@ TEST_F(FileV4Test, V3ToV4EmptyAttachmentConversion) {
   EXPECT_FALSE(readItem.IsAttFileNameSet());
   EXPECT_FALSE(readItem.IsAttModificationTimeSet());
   EXPECT_FALSE(readItem.IsAttContentSet());
+
+  // Get core to delete any existing commands
+  core.ClearCommands();
 }
