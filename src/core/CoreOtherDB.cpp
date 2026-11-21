@@ -771,6 +771,13 @@ stringT PWScore::Merge(PWScore *pothercore,
         UpdateWizard(sxMergedEntry.c_str());
 
         numConflicts++;
+      } else {
+        // Identical entry already in our database, probably under a different
+        // UUID: its dependents must point to our entry, if that can be their base
+        if (curItem.IsNormal() || curItem.GetEntryType() == et)
+          curItem.GetUUID(new_base_uuid);
+        else
+          et = CItemData::ET_NORMAL; // can't be their base - don't merge dependents
       }
     } else {
       // Didn't find any match...add it directly

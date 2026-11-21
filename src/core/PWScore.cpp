@@ -2284,6 +2284,8 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
   auto diter = m_pwlist.find(entry_uuid);
   ASSERT(biter != m_pwlist.end());
   ASSERT(diter != m_pwlist.end());
+  if (biter == m_pwlist.end() || diter == m_pwlist.end())
+    return;
 
   diter->second.SetBaseUUID(base_uuid);
 

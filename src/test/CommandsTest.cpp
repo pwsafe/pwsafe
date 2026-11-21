@@ -1830,6 +1830,64 @@ TEST_F(CommandsTest, ProcessPolicyName)
   core.ClearCommands();
 }
 
+TEST_F(CommandsTest, MergeDependentsOfIdenticalEntry)
+{
+  // Both databases hold the same entry under different UUIDs; the other
+  // one also has an alias of it. Merge must attach the alias to our copy,
+  // not to a base UUID that isn't in this database.
+  PWScore othercore;
+
+  CItemData ours, theirs, al;
+  ours.CreateUUID();
+  ours.SetGroup(L"G");
+  ours.SetTitle(L"wifi");
+  ours.SetUser(L"guest");
+  ours.SetPassword(L"s3cret");
+  ours.SetPWPolicy(L"f00000e001001001001");
+  theirs = ours;
+  theirs.CreateUUID();
+  ASSERT_NE(ours.GetUUID(), theirs.GetUUID());
+
+  al.CreateUUID();
+  al.SetGroup(L"G");
+  al.SetTitle(L"wifi-lobby");
+  al.SetUser(L"guest");
+  al.SetPassword(L"[Alias]");
+  al.SetAlias();
+
+  core.Execute(AddEntryCommand::Create(&core, ours));
+  core.ClearCommands();
+  MultiCommands *pmulticmds = MultiCommands::Create(&othercore);
+  pmulticmds->Add(AddEntryCommand::Create(&othercore, theirs));
+  pmulticmds->Add(AddEntryCommand::Create(&othercore, al, theirs.GetUUID()));
+  othercore.Execute(pmulticmds);
+  othercore.ClearCommands();
+  ASSERT_EQ(1U, core.GetNumEntries());
+  ASSERT_EQ(2U, othercore.GetNumEntries());
+
+  CReport rpt;
+  core.Merge(&othercore, false, L"", 0, 0, &rpt);
+
+  EXPECT_EQ(2U, core.GetNumEntries());
+  EXPECT_TRUE(core.GetEmptyGroups().empty());
+
+  auto ourPos = core.Find(ours.GetUUID());
+  ASSERT_NE(core.GetEntryEndIter(), ourPos);
+  EXPECT_TRUE(ourPos->second.IsAliasBase());
+
+  auto alPos = core.Find(L"G", L"wifi-lobby", L"guest");
+  ASSERT_NE(core.GetEntryEndIter(), alPos);
+  EXPECT_TRUE(alPos->second.IsAlias());
+  EXPECT_EQ(ours.GetUUID(), alPos->second.GetBaseUUID());
+
+  UUIDVector dependents;
+  core.GetAllDependentEntries(ours.GetUUID(), dependents, CItemData::ET_ALIAS);
+  ASSERT_EQ(1U, dependents.size());
+  EXPECT_EQ(alPos->second.GetUUID(), dependents[0]);
+
+  core.ClearCommands();
+}
+
 TEST_F(CommandsTest, DBEmptyGroupsCommand)
 {
   const StringX group1(L"Group1");
