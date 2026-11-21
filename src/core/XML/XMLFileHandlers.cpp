@@ -115,6 +115,12 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       if (m_bValidation)
         return false;
 
+      if (m_cur_entry != nullptr) {
+        // Entry within an entry - don't rely on the schema alone to prevent this
+        m_bErrors = true;
+        return false;
+      }
+
       m_cur_entry = new pw_entry;
       // Clear all fields XXX Do we need this? The default c'tor should handle this for us
       m_cur_entry->id = 0;
@@ -210,9 +216,26 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
   PWSprefs::IntPrefs ipref(PWSprefs::NumIntPrefs);
   PWSprefs::StringPrefs spref(PWSprefs::NumStringPrefs);
 
+  // Don't rely on the schema alone to ensure that the entry, custom field or
+  // history entry that an element belongs to is being processed
+  const bool bEntryElement = icurrent_element == XLE_ENTRY ||
+    (icurrent_element >= XLE_GROUP && icurrent_element < XLE_LAST_ELEMENT &&
+      !(icurrent_element == XLE_SYMBOLS && m_bPolicyBeingProcessed));
+
+  if ((bEntryElement && m_cur_entry == nullptr) ||
+    (icurrent_element >= XLE_CUSTOM_FIELD && icurrent_element <= XLE_CUSTOM_FIELD_SENSITIVE &&
+      m_cur_custom_field == nullptr) ||
+    (icurrent_element >= XLE_HISTORY_ENTRY && icurrent_element <= XLE_OLDPASSWORD &&
+      m_cur_pwhistory_entry == nullptr)) {
+    m_bErrors = true;
+    return;
+  }
+
+
   switch (icurrent_element) {
     case XLE_ENTRY:
       m_ventries.push_back(m_cur_entry);
+      m_cur_entry = nullptr; // m_ventries now owns it - each entry must be in there only once
       m_numEntries++;
       break;
 
