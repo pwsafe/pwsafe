@@ -1279,6 +1279,16 @@ void PasswordSafeFrame::SetTitle(const wxString& title)
 int PasswordSafeFrame::Load(const StringX &passwd)
 {
   int status = m_core.ReadCurFile(passwd);
+  if (status == PWScore::BAD_DIGEST) {
+    // The integrity check runs after all records have been read into the core,
+    // so ask the user whether to use them, as ReadCore() does for the "other"
+    // database, and drop them otherwise
+    if (wxMessageBox(towxstring(m_core.GetCurFile()) << wxT("\n\n") << _("File corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"),
+                     _("File Read Error"), wxYES_NO | wxICON_QUESTION, this) == wxYES)
+      status = PWScore::SUCCESS;
+    else
+      m_core.ClearDBData();
+  }
   if (status == PWScore::SUCCESS) {
     wxGetApp().ConfigureIdleTimer();
     SetTitle(m_core.GetCurFile().c_str());
