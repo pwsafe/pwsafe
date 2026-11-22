@@ -52,11 +52,43 @@ std::string FieldId(int ft)
 class SearchUtilsTest : public ::testing::Test
 {
 protected:
-  void SetUp() override;
+  void SetUp() override
+  {
+    CItemData plain;
+    plain.CreateUUID();
+    plain.SetTitle(plainTitle);
+    plain.SetPassword(plainPassword);
+    plain.SetNotes(plainNotes);
+    items.push_back(plain);
+
+    CItemData withAtt;
+    withAtt.CreateUUID();
+    withAtt.SetTitle(attTitle);
+    withAtt.SetPassword(attPassword);
+    withAtt.SetAttTitle(attAttTitle);
+    withAtt.SetAttFileName(attAttFileName);
+    withAtt.SetAttMediaType(attAttMediaType);
+    const unsigned char content[] = {0xff, 0xd8, 0xff, 0xe0, 0xff, 0xd9};
+    withAtt.SetAttContent(content, sizeof(content));
+    items.push_back(withAtt);
+  }
 
   // Returns the titles of all matching entries, in container order
   Titles Find(const StringX &text, bool caseSensitive,
-              const CItemData::FieldBits &bsFields) const;
+              const CItemData::FieldBits &bsFields) const
+  {
+    Titles found;
+    ::FindMatches(text, caseSensitive, bsFields,
+                  false, stringT{}, CItemData::END, PWSMatch::MR_INVALID, false,
+                  items.begin(), items.end(),
+                  [](ItemVec::const_iterator it) -> const CItemData & { return *it; },
+                  [&found](ItemVec::const_iterator it, bool *keep_going) {
+                    found.push_back(it->GetTitle());
+                    *keep_going = true;
+                  });
+    return found;
+  }
+
   Titles Find(const StringX &text, bool caseSensitive = false) const
   {
     CItemData::FieldBits all;
@@ -80,42 +112,6 @@ protected:
 
   ItemVec items;
 };
-
-void SearchUtilsTest::SetUp()
-{
-  CItemData plain;
-  plain.CreateUUID();
-  plain.SetTitle(plainTitle);
-  plain.SetPassword(plainPassword);
-  plain.SetNotes(plainNotes);
-  items.push_back(plain);
-
-  CItemData withAtt;
-  withAtt.CreateUUID();
-  withAtt.SetTitle(attTitle);
-  withAtt.SetPassword(attPassword);
-  withAtt.SetAttTitle(attAttTitle);
-  withAtt.SetAttFileName(attAttFileName);
-  withAtt.SetAttMediaType(attAttMediaType);
-  const unsigned char content[] = {0xff, 0xd8, 0xff, 0xe0, 0xff, 0xd9};
-  withAtt.SetAttContent(content, sizeof(content));
-  items.push_back(withAtt);
-}
-
-Titles SearchUtilsTest::Find(const StringX &text, bool caseSensitive,
-                             const CItemData::FieldBits &bsFields) const
-{
-  Titles found;
-  ::FindMatches(text, caseSensitive, bsFields,
-                false, stringT{}, CItemData::END, PWSMatch::MR_INVALID, false,
-                items.begin(), items.end(),
-                [](ItemVec::const_iterator it) -> const CItemData & { return *it; },
-                [&found](ItemVec::const_iterator it, bool *keep_going) {
-                  found.push_back(it->GetTitle());
-                  *keep_going = true;
-                });
-  return found;
-}
 
 } // namespace
 

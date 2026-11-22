@@ -35,6 +35,28 @@ int CAdvancedDlg::dialog_lookup[LAST] = {
   IDD_ADVANCED,          // FIND
   IDD_ADVANCEDCOMPSYNCH  // Reduced for synchronizing only one entry
 };
+
+namespace {
+struct FieldInit {int si; int ii;}; // string resource id, field type
+
+// Attachment fields offered by Find. The media type is deliberately not
+// offered: users search the file name suffix instead.
+
+// V4: attachments are separate records (CItemAtt), selected via m_bsAttFields
+const FieldInit attInit[] = {
+  {IDS_FILETITLE, CItemAtt::ATTTITLE}, // NOT CItemAtt::TITLE, which is the entry's title!
+  {IDS_FILENAME, CItemAtt::FILENAME},
+  {IDS_FILEPATH, CItemAtt::FILEPATH},
+};
+
+// V3: the (single) attachment is stored in the entry itself,
+// so its fields are ordinary CItemData fields, selected via m_bsFields
+const FieldInit v3attInit[] = {
+  {IDS_FILETITLE, CItemData::DATA_ATT_TITLE},
+  {IDS_FILENAME, CItemData::DATA_ATT_FILENAME},
+};
+} // namespace
+
 /////////////////////////////////////////////////////////////////////////////
 // CAdvancedDlg dialog
 
@@ -280,16 +302,8 @@ BOOL CAdvancedDlg::OnInitDialog()
     const CString cs_att = L" (" + CString(MAKEINTRESOURCE(IDS_ATTACHMENTS)) + L")";
 
     if (m_current_version >= PWSfile::V40) {
-      // V4: attachments are separate records (CItemAtt), selected via m_bsAttFields.
       // Initially all go into the "available" list; SetAtt() below moves
       // the selected ones across.
-      const struct {int si; int ii;} attInit[] = {
-        {IDS_FILETITLE, CItemAtt::ATTTITLE}, // NOT CItemAtt::TITLE, which is the entry's title!
-        {IDS_FILENAME, CItemAtt::FILENAME},
-        {IDS_FILEPATH, CItemAtt::FILEPATH},
-        // Media type deliberately not offered: search the file name suffix instead
-      };
-
       for (auto &elem : attInit) {
         cs_text.LoadString(elem.si);
         cs_text += cs_att;
@@ -299,15 +313,7 @@ BOOL CAdvancedDlg::OnInitDialog()
       }
       m_bsAttDefaultSelectedFields = st_SaveAdvValues().bsAttFields;
     } else {
-      // V3: the (single) attachment is stored in the entry itself,
-      // so its fields are ordinary CItemData fields, selected via m_bsFields.
       // Title and file name are searched by default, as in the basic Find (bug #1638).
-      // Media type deliberately not offered, as for V4.
-      const struct {int si; int ii;} v3attInit[] = {
-        {IDS_FILETITLE, CItemData::DATA_ATT_TITLE},
-        {IDS_FILENAME, CItemData::DATA_ATT_FILENAME},
-      };
-
       for (auto &elem : v3attInit) {
         cs_text.LoadString(elem.si);
         cs_text += cs_att;
