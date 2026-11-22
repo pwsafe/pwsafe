@@ -18,6 +18,39 @@
 
 #include <cerrno>
 
+static_assert(MIN_HASH_ITERATIONS < MAX_USABLE_HASH_ITERS,
+              "MIN_HASH_ITERATIONS must be below MAX_USABLE_HASH_ITERS");
+
+int PWSfile::HashItersToUnlockDifficulty(uint32 iters)
+{
+  if (iters <= MIN_HASH_ITERATIONS)
+    return 0;
+  if (iters >= MAX_USABLE_HASH_ITERS)
+    return MAX_UNLOCK_DIFFICULTY;
+  // ceil((iters - MIN) * MAX_LEVEL / range), the inverse of
+  // UnlockDifficultyToHashIters() rounded up
+  const uint64 range = MAX_USABLE_HASH_ITERS - MIN_HASH_ITERATIONS;
+  const uint64 delta = iters - MIN_HASH_ITERATIONS;
+  return static_cast<int>((delta * MAX_UNLOCK_DIFFICULTY + range - 1) / range);
+}
+
+uint32 PWSfile::UnlockDifficultyToHashIters(int level)
+{
+  if (level <= 0)
+    return MIN_HASH_ITERATIONS;
+  if (level >= MAX_UNLOCK_DIFFICULTY)
+    return MAX_USABLE_HASH_ITERS;
+  const uint64 range = MAX_USABLE_HASH_ITERS - MIN_HASH_ITERATIONS;
+  return MIN_HASH_ITERATIONS + static_cast<uint32>(range * level / MAX_UNLOCK_DIFFICULTY);
+}
+
+uint32 PWSfile::UnlockDifficultyToHashIters(int level, uint32 currentIters)
+{
+  if (level == HashItersToUnlockDifficulty(currentIters))
+    return currentIters;
+  return UnlockDifficultyToHashIters(level);
+}
+
 PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
                               VERSION &version, RWmode mode, int &status,
                               Asker *pAsker, Reporter *pReporter)

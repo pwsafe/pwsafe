@@ -109,6 +109,25 @@ public:
   static bool Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess);
   static size_t fileThresholdSize; // files this size and above encrypted differently - configurable for testing
 
+  /**
+   * Hash iterations is the value we use in the database. Unlock Difficulty is what the user sees (as a slider).
+   * Here we map between them for all UI platforms.
+   * Iterations are between MIN_HASH_ITERATIONS and MAX_USABLE_HASH_ITERS, with the former being increased
+   * periodically to keep up with Moore's law.
+   * Unlock Difficulty is between 0 and MAX_UNLOCK_DIFFICULTY.
+   * We maintain a linear mapping between the two ranges.
+   */
+
+  static constexpr int MAX_UNLOCK_DIFFICULTY = 31;
+
+  // Returns the lowest level whose iteration count is >= iters,
+  // so that a value between levels is never shown as weaker than it is.
+  static int HashItersToUnlockDifficulty(uint32 iters);
+  static uint32 UnlockDifficultyToHashIters(int level);
+  // As above, but if level is what currentIters maps to (i.e., the user didn't change it),
+  // returns currentIters unchanged, so that it's never modified unintentionally (SF1640).
+  static uint32 UnlockDifficultyToHashIters(int level, uint32 currentIters);
+
   virtual ~PWSfile();
 
   virtual int Open(const StringX &passkey) = 0;

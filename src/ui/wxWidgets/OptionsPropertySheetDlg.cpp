@@ -783,7 +783,7 @@ wxPanel* OptionsPropertySheetDlg::CreateSecurityPanel(const wxString& title)
   wxStaticText* itemStaticText98 = new wxStaticText( itemPanel86, ID_STATICTEXT_3, _("Unlock Difficulty:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer97->Add(itemStaticText98, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxSlider* security_HashIterSliderSL = new wxSlider( itemPanel86, ID_SLIDER, 0, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_AUTOTICKS );
+  wxSlider* security_HashIterSliderSL = new wxSlider( itemPanel86, ID_SLIDER, 0, 0, PWSfile::MAX_UNLOCK_DIFFICULTY, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_AUTOTICKS );
   itemBoxSizer97->Add(security_HashIterSliderSL, 0, wxEXPAND|wxALL, 5);
 
   auto *itemBoxSizer100 = new wxBoxSizer(wxHORIZONTAL);
@@ -1054,15 +1054,8 @@ void OptionsPropertySheetDlg::PrefsToPropSheet()
   m_Security_IdleTimeoutSB->SetValue(     prefs->GetPref(PWSprefs::IdleTimeout));
 
   auto *app = dynamic_cast<PWSafeApp *>(wxTheApp);
-  uint32 hashIters = app->GetHashIters();
-  if (hashIters <= MIN_HASH_ITERATIONS) {
-    m_Security_HashIterSlider = 0;
-  } else {
-    const int step = MAX_USABLE_HASH_ITERS/100;
-    m_Security_HashIterSlider = uint32(hashIters/step);
-  }
-  m_origHashIterValue = hashIters;
-  m_origHashIterSlider = m_Security_HashIterSlider;
+  m_origHashIterValue = app->GetHashIters();
+  m_Security_HashIterSlider = PWSfile::HashItersToUnlockDifficulty(m_origHashIterValue);
 
   // System preferences
   m_System_MaxREItemsSB->SetValue(prefs->GetPref(PWSprefs::MaxREItems));
@@ -1156,16 +1149,9 @@ void OptionsPropertySheetDlg::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::DatabaseClear              , m_Security_LockOnMinimize);
   prefs->SetPref(PWSprefs::LockOnWindowLock           , m_Security_LockOnWindowLock);
 
-  if (m_Security_HashIterSlider == m_origHashIterSlider) {
-    // Slider not moved: keep the database's exact value (SF1640)
-    m_hashIterValue = m_origHashIterValue;
-  } else {
-    m_hashIterValue = MIN_HASH_ITERATIONS;
-    if (m_Security_HashIterSlider > 0) {
-      const int step = MAX_USABLE_HASH_ITERS/100;
-      m_hashIterValue = uint32(m_Security_HashIterSlider*step);
-    }
-  }
+  // Keeps the database's exact value if slider not moved (SF1640)
+  m_hashIterValue = PWSfile::UnlockDifficultyToHashIters(m_Security_HashIterSlider,
+                                                         m_origHashIterValue);
 
   // System preferences
   prefs->SetPref(PWSprefs::MaxREItems, m_System_MaxREItemsSB->GetValue());
