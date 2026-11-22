@@ -462,8 +462,9 @@ TEST(UnlockDifficultyTest, StrictlyIncreasingAndRoundTrips)
   for (int level = 0; level <= PWSfile::MAX_UNLOCK_DIFFICULTY; level++) {
     const uint32 iters = PWSfile::UnlockDifficultyToHashIters(level);
     EXPECT_GE(iters, kMinIters);
-    if (level > 0)
+    if (level > 0) {
       EXPECT_GT(iters, prev) << "level " << level;
+    }
     EXPECT_EQ(level, PWSfile::HashItersToUnlockDifficulty(iters)) << "level " << level;
     prev = iters;
   }
@@ -494,11 +495,13 @@ TEST(UnlockDifficultyTest, UnchangedLevelKeepsCurrentValue)
     const int level = PWSfile::HashItersToUnlockDifficulty(v);
     EXPECT_EQ(v, PWSfile::UnlockDifficultyToHashIters(level, v)) << v;
     // Moving the slider does change the value
-    if (level > 0)
+    if (level > 0) {
       EXPECT_EQ(PWSfile::UnlockDifficultyToHashIters(level - 1),
                 PWSfile::UnlockDifficultyToHashIters(level - 1, v)) << v;
-    if (level < PWSfile::MAX_UNLOCK_DIFFICULTY)
+    }
+    if (level < PWSfile::MAX_UNLOCK_DIFFICULTY) {
       EXPECT_EQ(PWSfile::UnlockDifficultyToHashIters(level + 1),
                 PWSfile::UnlockDifficultyToHashIters(level + 1, v)) << v;
+    }
   }
 }
