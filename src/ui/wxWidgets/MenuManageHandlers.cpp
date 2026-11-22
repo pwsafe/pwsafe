@@ -238,16 +238,26 @@ void PasswordSafeFrame::DoRestoreSafe()
     ClearAppData();
 
     const int rc = m_core.ReadFile(tostringx(wxbf), passkey, true, MAXTEXTCHARS);
+    bool user_approved = false;
+
     if (rc == PWScore::CANT_OPEN_FILE) {
       wxMessageBox(wxbf << wxT("\n\n") << _("Could not open file for reading!"),
                       _("File Read Error"), wxOK | wxICON_ERROR, this);
       return /*PWScore::CANT_OPEN_FILE*/;
     }
-    if (rc == PWScore::BAD_DIGEST &&
+    if ((rc == PWScore::BAD_DIGEST || rc == PWScore::TRUNCATED_FILE) &&
         wxMessageBox(wxString(wxbf) << wxT("\n\n") << _("File corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"),
                      _("File Read Error"), wxYES_NO | wxICON_QUESTION, this) != wxYES) {
       m_core.ClearDBData(); // ReadFile() keeps the records it read before the check failed
       return /*PWScore::BAD_DIGEST*/;
+    } else {
+      user_approved = true;
+    }
+
+    if (rc != PWScore::SUCCESS && !user_approved) {
+      wxMessageBox(wxbf << wxT("\n\n") << _("Unspecified read error ") << rc,
+        _("File Read Error"), wxOK | wxICON_ERROR, this);
+      return;
     }
 
     m_core.SetCurFile(wxEmptyString);    // Force a Save As...
