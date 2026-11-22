@@ -12,7 +12,9 @@ PasswordSafe 1.26.2 Release ??? ?? 2026
 
 Bugs fixed in 1.26.2
 --------------------
-* [SF1638](https://sourceforge.net/p/passwordsafe/bugs/1638/) Find now also searches attachment file name and title fields.
+* [SF1638](https://sourceforge.net/p/passwordsafe/bugs/1638/) Fixes to Find:
+   * Find now also searches attachment file name and title fields.
+   * Find now also searches the entry's Symbols field.
 
 PasswordSafe 1.26.1 Release November 10 2026
 ============================================

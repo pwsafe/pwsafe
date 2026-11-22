@@ -202,8 +202,9 @@ struct CompareDlgType {
     }
   }
 
-  static bool IsUsableField(CItemData::FieldType WXUNUSED(field)) {
-    return true;
+  static bool IsUsableField(CItemData::FieldType field) {
+    // Attachment title & file name are selectable for Find only
+    return field != CItemData::DATA_ATT_TITLE && field != CItemData::DATA_ATT_FILENAME;
   }
 
   static bool ShowFieldSelection() {

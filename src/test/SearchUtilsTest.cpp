@@ -194,7 +194,7 @@ TEST_F(SearchUtilsTest, everyTextFieldIsClassified)
     CItemData::GROUP, CItemData::TITLE, CItemData::USER, CItemData::NOTES,
     CItemData::PASSWORD, CItemData::URL, CItemData::AUTOTYPE,
     CItemData::PWHIST,   // previous passwords
-    CItemData::RUNCMD, CItemData::EMAIL,
+    CItemData::RUNCMD, CItemData::EMAIL, CItemData::SYMBOLS,
     CItemData::DATA_ATT_TITLE, CItemData::DATA_ATT_FILENAME,
   };
 
@@ -206,9 +206,7 @@ TEST_F(SearchUtilsTest, everyTextFieldIsClassified)
     CItemData::TWOFACTORKEY,       // not searched by Windows FindAll() either
     CItemData::CCNUM, CItemData::CCEXP, CItemData::CCVV, CItemData::CCPIN, // ditto
     CItemData::PASSKEY_RP_ID,      // ditto
-    // NOTE: the following ARE searched by the Windows UI (DboxMain::FindAll),
-    // so wx and CLI differ from it here:
-    CItemData::SYMBOLS, CItemData::POLICYNAME, CItemData::CUSTOMTEXT,
+    CItemData::POLICYNAME, CItemData::CUSTOMTEXT,
   };
 
   // IDs in [START, LAST_DATA) that aren't stored fields at all
