@@ -35,7 +35,8 @@ IMPLEMENT_DYNAMIC(COptionsSecurity, COptions_PropertyPage)
 
 COptionsSecurity::COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD)
 : COptions_PropertyPage(pParent, COptionsSecurity::IDD, pOPTMD),
-  m_HashIterSliderValue(0), m_HashIter(0)
+  m_HashIterSliderValue(0), m_HashIter(0),
+  m_OrigHashIterSliderValue(0), m_OrigHashIter(0)
 {
   m_ClearClipboardOnMinimize = M_ClearClipboardOnMinimize();
   m_ClearClipboardOnExit = M_ClearClipboardOnExit();
@@ -160,7 +161,10 @@ BOOL COptionsSecurity::OnInitDialog()
 
 void COptionsSecurity::UpdateHashIter()
 {
-  if (m_HashIterSliderValue <= MinHIslider) {
+  if (m_HashIterSliderValue == m_OrigHashIterSliderValue) {
+    // Slider not moved: keep the database's exact value (SF1640)
+    m_HashIter = m_OrigHashIter;
+  } else if (m_HashIterSliderValue <= MinHIslider) {
     m_HashIter = MIN_HASH_ITERATIONS;
   } else {
     const int step = MAX_USABLE_HASH_ITERS/(MaxHIslider - MinHIslider);
@@ -176,6 +180,8 @@ void COptionsSecurity::SetHashIter(uint32 value)
     const int step = MAX_USABLE_HASH_ITERS/(MaxHIslider - MinHIslider);
     m_HashIterSliderValue = int(value) / step;
   }
+  m_OrigHashIterSliderValue = m_HashIterSliderValue;
+  m_OrigHashIter = value;
   UpdateHashIter();
 }
 

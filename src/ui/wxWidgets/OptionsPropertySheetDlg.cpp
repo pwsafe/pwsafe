@@ -1061,6 +1061,8 @@ void OptionsPropertySheetDlg::PrefsToPropSheet()
     const int step = MAX_USABLE_HASH_ITERS/100;
     m_Security_HashIterSlider = uint32(hashIters/step);
   }
+  m_origHashIterValue = hashIters;
+  m_origHashIterSlider = m_Security_HashIterSlider;
 
   // System preferences
   m_System_MaxREItemsSB->SetValue(prefs->GetPref(PWSprefs::MaxREItems));
@@ -1154,10 +1156,15 @@ void OptionsPropertySheetDlg::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::DatabaseClear              , m_Security_LockOnMinimize);
   prefs->SetPref(PWSprefs::LockOnWindowLock           , m_Security_LockOnWindowLock);
 
-  m_hashIterValue = MIN_HASH_ITERATIONS;
-  if (m_Security_HashIterSlider > 0) {
-    const int step = MAX_USABLE_HASH_ITERS/100;
-    m_hashIterValue = uint32(m_Security_HashIterSlider*step);
+  if (m_Security_HashIterSlider == m_origHashIterSlider) {
+    // Slider not moved: keep the database's exact value (SF1640)
+    m_hashIterValue = m_origHashIterValue;
+  } else {
+    m_hashIterValue = MIN_HASH_ITERATIONS;
+    if (m_Security_HashIterSlider > 0) {
+      const int step = MAX_USABLE_HASH_ITERS/100;
+      m_hashIterValue = uint32(m_Security_HashIterSlider*step);
+    }
   }
 
   // System preferences

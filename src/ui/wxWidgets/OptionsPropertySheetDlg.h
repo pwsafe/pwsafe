@@ -287,6 +287,10 @@ private:
   wxStaticText*   m_System_SystemTrayWarningST = nullptr;
 
   uint32 m_hashIterValue;
+  // Value when dialog was opened, and slider position it was shown as.
+  // If the user doesn't move the slider, keep the original value.
+  uint32 m_origHashIterValue = 0;
+  int m_origHashIterSlider = 0;
   int m_DoubleClickAction;
   int m_ShiftDoubleClickAction;
 

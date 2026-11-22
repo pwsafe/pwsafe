@@ -49,6 +49,10 @@ protected:
   enum {MinHIslider = 0, MaxHIslider = 31};
   int m_HashIterSliderValue;
   uint32 m_HashIter;
+  // Value passed to SetHashIter, and slider position it was shown as.
+  // If the user doesn't move the slider, keep the original value.
+  int m_OrigHashIterSliderValue;
+  uint32 m_OrigHashIter;
 
   CButtonExtn m_chkbox[2];
   CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;
