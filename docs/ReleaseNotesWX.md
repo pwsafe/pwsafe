@@ -7,6 +7,15 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 1.26.2 Release ??? ?? 2026
+=======================================
+
+Bugs fixed in 1.26.2
+--------------------
+* [SF1638](https://sourceforge.net/p/passwordsafe/bugs/1638/) Fixes to Find:
+   * Find now also searches attachment file name and title fields.
+   * Find now also searches the entry's Symbols field.
+
 PasswordSafe 1.26.1 Release November 10 2026
 ============================================
 
