@@ -1856,7 +1856,6 @@ TEST_F(CommandsTest, MergeDependentsOfIdenticalEntry)
   al.SetAlias();
 
   core.Execute(AddEntryCommand::Create(&core, ours));
-  core.ClearCommands();
   MultiCommands *pmulticmds = MultiCommands::Create(&othercore);
   pmulticmds->Add(AddEntryCommand::Create(&othercore, theirs));
   pmulticmds->Add(AddEntryCommand::Create(&othercore, al, theirs.GetUUID()));
@@ -1884,8 +1883,6 @@ TEST_F(CommandsTest, MergeDependentsOfIdenticalEntry)
   core.GetAllDependentEntries(ours.GetUUID(), dependents, CItemData::ET_ALIAS);
   ASSERT_EQ(1U, dependents.size());
   EXPECT_EQ(alPos->second.GetUUID(), dependents[0]);
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, DBEmptyGroupsCommand)
