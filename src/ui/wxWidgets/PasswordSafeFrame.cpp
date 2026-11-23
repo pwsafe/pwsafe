@@ -2185,8 +2185,10 @@ void PasswordSafeFrame::StartTotpDisplayAuthCode()
   if (m_TotpCountdownTimer && m_TotpCountdownTimer->IsRunning()) {
     return;
   }
-  m_TotpCountdownTimer = new wxTimer(this, ID_TIMER_DISPLAY_TOTP);
-  Bind(wxEVT_TIMER, &PasswordSafeFrame::OnTotpCountdownTimer, this, m_TotpCountdownTimer->GetId());
+  if (m_TotpCountdownTimer == nullptr) {
+    m_TotpCountdownTimer = new wxTimer(this, ID_TIMER_DISPLAY_TOTP);
+    Bind(wxEVT_TIMER, &PasswordSafeFrame::OnTotpCountdownTimer, this, m_TotpCountdownTimer->GetId());
+  }
   m_TotpCountdownTimer->Start(GetTotpCountdownInterval());
 }
 
@@ -2205,8 +2207,10 @@ void PasswordSafeFrame::StartTotpCopyAuthCode()
   if (m_TotpCopyAuthCodeTimer && m_TotpCopyAuthCodeTimer->IsRunning()) {
     return;
   }
-  m_TotpCopyAuthCodeTimer = new wxTimer(this, ID_TIMER_COPY_TOTP);
-  Bind(wxEVT_TIMER, &PasswordSafeFrame::OnTotpCopyAuthCodeTimer, this, m_TotpCopyAuthCodeTimer->GetId());
+  if (m_TotpCopyAuthCodeTimer == nullptr) {
+    m_TotpCopyAuthCodeTimer = new wxTimer(this, ID_TIMER_COPY_TOTP);
+    Bind(wxEVT_TIMER, &PasswordSafeFrame::OnTotpCopyAuthCodeTimer, this, m_TotpCopyAuthCodeTimer->GetId());
+  }
   m_TotpCopyAuthCodeTimer->Start(GetTotpCountdownInterval());
 }
 
