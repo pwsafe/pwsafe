@@ -507,6 +507,20 @@ TEST_F(FileV4Test, CoreEmptyPassKey)
   core.SetPassKey(_T(""));
 }
 
+TEST_F(FileV4Test, CoreCheckEmptyPassKey)
+{
+  // Regression case: checking an empty passkey against an empty in-memory
+  // passkey used to call EncryptPassword() with len 0 (asserts in debug builds)
+  // and memcmp() with a null m_passkey.
+  // An empty filename makes CheckPasskey() compare against the in-memory passkey.
+
+  core.SetPassKey(_T(""));
+  EXPECT_EQ(PWSfile::SUCCESS, core.CheckPasskey(_T(""), _T("")));
+
+  core.SetPassKey(passphrase);
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.CheckPasskey(_T(""), _T("")));
+}
+
 TEST_F(FileV4Test, CoreRWTest)
 {
   const StringX passkey(L"3rdMambo");

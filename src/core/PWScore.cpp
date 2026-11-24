@@ -1066,6 +1066,9 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
     size_t t_passkey_len = passkey.length();
     if (t_passkey_len != m_passkey_len) // trivial test
       return WRONG_PASSWORD;
+    // Both empty: nothing to encrypt or compare (m_passkey is nullptr)
+    if (m_passkey_len == 0)
+      return PWSfile::SUCCESS;
     size_t BlockLength = ((m_passkey_len + 7) / 8) * 8;
     auto *t_passkey = new unsigned char[BlockLength];
     auto plaintext = passkey.c_str();
