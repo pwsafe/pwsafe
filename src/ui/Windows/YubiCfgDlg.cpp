@@ -212,7 +212,7 @@ void CYubiCfgDlg::OnBnClickedOk()
       // 1. Update SK on Yubi.
 
       // 2. If YubiKey update succeeds, update in core.
-      m_core.SetYubiSK(yubi_sk_bin);
+      m_core.SetYubiSK(yubi_sk_bin, sizeof(yubi_sk_bin));
 
       // 3. Write DB ASAP!
       int rc = m_core.WriteCurFile();

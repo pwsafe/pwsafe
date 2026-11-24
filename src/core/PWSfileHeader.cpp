@@ -27,21 +27,34 @@ PWSfileHeader::PWSfileHeader(const PWSfileHeader &h)
     m_whenpwdlastchanged(h.m_whenpwdlastchanged),
     m_lastsavedby(h.m_lastsavedby), m_lastsavedon(h.m_lastsavedon),
     m_whatlastsaved(h.m_whatlastsaved),
-    m_DB_Name(h.m_DB_Name), m_DB_Description(h.m_DB_Description), m_RUEList(h.m_RUEList)
+    m_DB_Name(h.m_DB_Name), m_DB_Description(h.m_DB_Description), m_RUEList(h.m_RUEList),
+    m_yubi_sk(nullptr)
 {
-  if (h.m_yubi_sk != nullptr) {
-    m_yubi_sk = new unsigned char[YUBI_SK_LEN];
-    memcpy(m_yubi_sk, h.m_yubi_sk, YUBI_SK_LEN);
-  } else {
-    m_yubi_sk = nullptr;
-  }
+  SetYubiSK(h.m_yubi_sk, YUBI_SK_LEN);
 }
 
 PWSfileHeader::~PWSfileHeader()
 {
-  if (m_yubi_sk)
+  SetYubiSK(nullptr, 0);
+}
+
+bool PWSfileHeader::SetYubiSK(const unsigned char *sk, size_t skLen)
+{
+  if (sk != nullptr && skLen != YUBI_SK_LEN)
+    return false;
+  // Also guards against freeing sk below before copying it
+  if (sk == m_yubi_sk)
+    return true;
+
+  if (m_yubi_sk != nullptr)
     trashMemory(m_yubi_sk, YUBI_SK_LEN);
   delete[] m_yubi_sk;
+  m_yubi_sk = nullptr;
+  if (sk != nullptr) {
+    m_yubi_sk = new unsigned char[YUBI_SK_LEN];
+    memcpy(m_yubi_sk, sk, YUBI_SK_LEN);
+  }
+  return true;
 }
 
 PWSfileHeader &PWSfileHeader::operator=(const PWSfileHeader &h)
@@ -60,15 +73,7 @@ PWSfileHeader &PWSfileHeader::operator=(const PWSfileHeader &h)
     m_DB_Name = h.m_DB_Name;
     m_DB_Description = h.m_DB_Description;
     m_RUEList = h.m_RUEList;
-    if (m_yubi_sk)
-      trashMemory(m_yubi_sk, YUBI_SK_LEN);
-    delete[] m_yubi_sk;
-    if (h.m_yubi_sk != nullptr) {
-      m_yubi_sk = new unsigned char[YUBI_SK_LEN];
-      memcpy(m_yubi_sk, h.m_yubi_sk, YUBI_SK_LEN);
-    } else {
-      m_yubi_sk = nullptr;
-    }
+    SetYubiSK(h.m_yubi_sk, YUBI_SK_LEN);
   }
   return *this;
 }

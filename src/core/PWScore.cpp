@@ -3390,16 +3390,9 @@ const unsigned char *PWScore::GetYubiSK() const
   return m_hdr.m_yubi_sk;
 }
 
-void PWScore::SetYubiSK(const unsigned char *sk)
+bool PWScore::SetYubiSK(const unsigned char *sk, size_t skLen)
 {
-  if (m_hdr.m_yubi_sk)
-    trashMemory(m_hdr.m_yubi_sk, PWSfileHeader::YUBI_SK_LEN);
-  delete[] m_hdr.m_yubi_sk;
-  m_hdr.m_yubi_sk = nullptr;
-  if (sk != nullptr) {
-    m_hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
-    memcpy(m_hdr.m_yubi_sk, sk, PWSfileHeader::YUBI_SK_LEN);
-  }
+  return m_hdr.SetYubiSK(sk, skLen);
 }
 
 bool PWScore::SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC)

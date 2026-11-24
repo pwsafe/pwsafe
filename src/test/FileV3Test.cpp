@@ -181,8 +181,7 @@ TEST_F(FileV3Test, HeaderDuplicateYubiSK)
   for (size_t i = 0; i < NumberOf(cases); i++) {
     SCOPED_TRACE(i);
     PWSfileHeader hdr;
-    hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
-    memcpy(hdr.m_yubi_sk, sk1, PWSfileHeader::YUBI_SK_LEN);
+    ASSERT_TRUE(hdr.SetYubiSK(sk1, PWSfileHeader::YUBI_SK_LEN));
 
     PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
     fw.SetHeader(hdr);

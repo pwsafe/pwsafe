@@ -270,9 +270,7 @@ TEST_F(FileV4Test, HeaderDuplicateYubiSK)
   for (size_t i = 0; i < NumberOf(cases); i++) {
     SCOPED_TRACE(i);
     PWSfileHeader hdr1(hdr);
-    delete[] hdr1.m_yubi_sk;
-    hdr1.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
-    memcpy(hdr1.m_yubi_sk, sk1, PWSfileHeader::YUBI_SK_LEN);
+    ASSERT_TRUE(hdr1.SetYubiSK(sk1, PWSfileHeader::YUBI_SK_LEN));
 
     PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
     fw.SetHeader(hdr1);
@@ -509,7 +507,7 @@ TEST_F(FileV4Test, CoreReadFileReplacesYubiSK)
     0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14};
 
   core.SetPassKey(passphrase);
-  core.SetYubiSK(sk);
+  ASSERT_TRUE(core.SetYubiSK(sk, sizeof(sk)));
   ASSERT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), PWSfile::V40));
 
   core.ClearDBData();

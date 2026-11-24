@@ -28,6 +28,11 @@ struct PWSfileHeader {
 
   enum { YUBI_SK_LEN = 20 };
 
+  // Replaces the YubiKey SK with a copy of sk, or clears it if sk is nullptr
+  // (skLen is then ignored). Leaves the SK unchanged and returns false if
+  // skLen isn't YUBI_SK_LEN.
+  bool SetYubiSK(const unsigned char *sk, size_t skLen);
+
   // Order as per documentation FormatVn.txt
   unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
   pws_os::CUUID m_file_uuid;            // Unique DB ID
