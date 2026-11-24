@@ -1063,13 +1063,14 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
       pws_os::setenv("PWS_PK_CP_ACP", ""); // no unsetenv() in Windows...
     }
   } else { // can happen if tries to export b4 save
-    size_t t_passkey_len = passkey.length();
-    if (t_passkey_len != m_passkey_len) // trivial test
+    size_t t_passkey_len = passkey.length() * sizeof(TCHAR);
+    if (t_passkey_len != m_passkey_len) // trivial test - cleartext lengths must match
       return WRONG_PASSWORD;
     // Both empty: nothing to encrypt or compare (m_passkey is nullptr)
     if (m_passkey_len == 0)
       return PWSfile::SUCCESS;
-    size_t BlockLength = ((m_passkey_len + 7) / 8) * 8;
+    const unsigned int BS = TwoFish::BLOCKSIZE;
+    size_t BlockLength = ((m_passkey_len + (BS - 1)) / BS) * BS;
     auto *t_passkey = new unsigned char[BlockLength];
     auto plaintext = passkey.c_str();
     EncryptPassword(reinterpret_cast<const unsigned char *>(plaintext), t_passkey_len, t_passkey);

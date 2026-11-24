@@ -521,6 +521,36 @@ TEST_F(FileV4Test, CoreCheckEmptyPassKey)
   EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.CheckPasskey(_T(""), _T("")));
 }
 
+TEST_F(FileV4Test, CoreCheckPassKeyInMemory)
+{
+  // Regression case: CheckPasskey() compared the passkey's length in characters
+  // against the stored length in bytes, so a correct non-empty passkey was always
+  // rejected. Its buffer was also rounded to 8 bytes while EncryptPassword()
+  // writes whole TwoFish blocks (16 bytes) which triggered a buffer overflow in ASan.
+  // An empty filename makes CheckPasskey() compare against the in-memory passkey.
+
+  core.SetPassKey(passphrase);
+  EXPECT_EQ(PWSfile::SUCCESS, core.CheckPasskey(_T(""), passphrase));
+
+  // Same length, different content
+  StringX wrong(passphrase);
+  wrong[0] = wrong[0] == _T('x') ? _T('y') : _T('x');
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.CheckPasskey(_T(""), wrong));
+
+  // Different length
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.CheckPasskey(_T(""), passphrase + _T("!")));
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.CheckPasskey(_T(""), _T("")));
+
+  // Passkey shorter than half a TwoFish block
+  const StringX shortKey(_T("a"));
+  core.SetPassKey(shortKey);
+  EXPECT_EQ(PWSfile::SUCCESS, core.CheckPasskey(_T(""), shortKey));
+
+  // A passkey whose length in characters equals the stored length in bytes mustn't match
+  const StringX charsEqBytes(shortKey.length() * sizeof(TCHAR), _T('a'));
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.CheckPasskey(_T(""), charsEqBytes));
+}
+
 TEST_F(FileV4Test, CoreRWTest)
 {
   const StringX passkey(L"3rdMambo");
