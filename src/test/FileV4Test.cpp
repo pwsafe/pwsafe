@@ -254,6 +254,47 @@ TEST_F(FileV4Test, HeaderTest)
   EXPECT_NE(hdr1.m_yubi_sk, hdr2.m_yubi_sk);
 }
 
+TEST_F(FileV4Test, HeaderDuplicateYubiSK)
+{
+  // Regression case: a repeated YubiKey SK header field leaked the previous
+  // copy (run with ASan). The file must still open, with the last SK winning.
+  const unsigned char sk1[PWSfileHeader::YUBI_SK_LEN] = {
+    0xf0, 0xe1, 0xd2, 0xc3, 0xb4, 0xa5, 0x96, 0x87, 0x78, 0x69,
+    0x5a, 0x4b, 0x3c, 0x2d, 0x1e, 0x0f, 0xa0, 0xb1, 0xc2, 0xd3};
+  unsigned char sk2[PWSfileHeader::YUBI_SK_LEN];
+  memcpy(sk2, sk1, sizeof(sk2));
+  sk2[PWSfileHeader::YUBI_SK_LEN - 1] ^= 0xff;
+
+  const unsigned char *cases[] = {sk1, sk2};
+
+  for (size_t i = 0; i < NumberOf(cases); i++) {
+    SCOPED_TRACE(i);
+    PWSfileHeader hdr1(hdr);
+    delete[] hdr1.m_yubi_sk;
+    hdr1.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
+    memcpy(hdr1.m_yubi_sk, sk1, PWSfileHeader::YUBI_SK_LEN);
+
+    PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
+    fw.SetHeader(hdr1);
+    // The extra SK field is passed as an "unknown" header field, which
+    // WriteHeader() then emits just before the regular HDR_YUBI_SK.
+    fw.SetUnknownHeaderFields(UnknownFieldList{
+      UnknownFieldEntry(PWSfile::HDR_YUBI_SK, PWSfileHeader::YUBI_SK_LEN, cases[i])});
+    ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+    ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+
+    PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
+    ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+    // The regular field, holding sk1, comes last
+    const PWSfileHeader hdr2 = fr.GetHeader();
+    ASSERT_NE(nullptr, hdr2.m_yubi_sk);
+    EXPECT_EQ(0, memcmp(sk1, hdr2.m_yubi_sk, PWSfileHeader::YUBI_SK_LEN));
+    // Close() verifies the HMAC, so read to the end first
+    EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+    EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+  }
+}
+
 TEST_F(FileV4Test, ItemTest)
 {
   PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);

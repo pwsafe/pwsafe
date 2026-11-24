@@ -886,13 +886,11 @@ int PWSfileV3::ReadHeader()
         }
 
       case HDR_YUBI_SK:
-        if (utf8Len != PWSfileHeader::YUBI_SK_LEN) {
+        if (!m_hdr.SetYubiSK(utf8, utf8Len)) { // last SK read from the header wins
           delete[] utf8;
           Close();
           return FAILURE;
         }
-        m_hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
-        memcpy(m_hdr.m_yubi_sk, utf8, PWSfileHeader::YUBI_SK_LEN);
         break;
 
       case HDR_PSWDPOLICIES:
@@ -964,8 +962,11 @@ int PWSfileV3::ReadHeader()
           }
         } else { // Looks like YUBI_OLD_SK: field length is exactly YUBI_SK_LEN
           //        and at least one non-hex character in first 4 of field.
-          m_hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
-          memcpy(m_hdr.m_yubi_sk, utf8, PWSfileHeader::YUBI_SK_LEN);
+          if (!m_hdr.SetYubiSK(utf8, utf8Len)) { // last SK read from the header wins
+            delete[] utf8;
+            Close();
+            return FAILURE;
+          }
         }
         break;
 
