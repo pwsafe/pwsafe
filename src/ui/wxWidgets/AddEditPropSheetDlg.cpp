@@ -1612,8 +1612,7 @@ wxIcon AddEditPropSheetDlg::GetIconResource( const wxString& WXUNUSED(name) )
 static void EnableSizerChildren(wxSizer *sizer, bool enable)
 {
   wxSizerItemList items = sizer->GetChildren();
-  wxSizerItemList::iterator iter;
-  for (iter = items.begin(); iter != items.end(); iter++) {
+  for (auto iter = items.begin(); iter != items.end(); iter++) {
     wxWindow *childW = (*iter)->GetWindow();
     if (childW != nullptr)
       childW->Enable(enable);
@@ -1627,11 +1626,9 @@ static void EnableSizerChildren(wxSizer *sizer, bool enable)
 
 void AddEditPropSheetDlg::UpdatePWPolicyControls(const PWPolicy& pwp)
 {
-  bool bUseVal; // keep picky compiler happy, code readable
-
   EnableSizerChildren(m_PasswordPolicySizer, !m_PasswordPolicyUseHexadecimalOnlyCtrl->GetValue());
   m_PasswordPolicyPasswordLengthCtrl->SetValue(pwp.length);
-  bUseVal = (pwp.flags & PWPolicy::UseLowercase) != 0;
+  bool bUseVal = (pwp.flags & PWPolicy::UseLowercase) != 0; // keep picky compiler happy, code readable
   m_PasswordPolicyUseLowerCaseCtrl->SetValue(bUseVal);
   m_PasswordPolicyLowerCaseMinCtrl->SetValue(pwp.lowerminlength);
   bUseVal = (pwp.flags & PWPolicy::UseUppercase) != 0;
@@ -2572,7 +2569,9 @@ void AddEditPropSheetDlg::StartTotp()
   }
   // Show and update the TOTP only when an existing item 
   // with an existing TOTP configuration is edited or viewed.
-  m_TotpTimer = new wxTimer(this, ID_TIMER_TOTP_COUNTDOWN);
+  if (m_TotpTimer == nullptr) {
+    m_TotpTimer = new wxTimer(this, ID_TIMER_TOTP_COUNTDOWN);
+  }
   if (m_ItemTotp.HasTwoFactorKey()) {
     m_TotpTimer->Start(GetTotpCountdownInterval());
   }
@@ -4157,7 +4156,7 @@ bool AddEditPropSheetDlg::CheckPWPolicyFromUI()
       return false;
     }
     // HexDigits implies no easyvision or pronounceable
-    if (pwp.flags & PWPolicy::UseHexDigits && ! ((pwp.flags & (PWPolicy::UseEasyVision | PWPolicy::MakePronounceable)) == 0)) {
+    if (pwp.flags & PWPolicy::UseHexDigits && (pwp.flags & (PWPolicy::UseEasyVision | PWPolicy::MakePronounceable)) != 0) {
       wxMessageDialog msg(
         this,
         _("HexDigits implies no easyvision or pronounceable to be set"),

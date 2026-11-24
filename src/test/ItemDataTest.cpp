@@ -18,7 +18,7 @@
 #include "gtest/gtest.h"
 
 // A fixture for factoring common code across tests
-class ItemDataTest : public ::testing::Test
+class ItemDataTest : public testing::Test
 {
 protected:
   ItemDataTest(); // to init members

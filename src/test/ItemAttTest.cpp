@@ -27,11 +27,11 @@
 using namespace std;
 
 // A fixture for factoring common code across tests
-class ItemAttTest : public ::testing::Test
+class ItemAttTest : public testing::Test
 {
 protected:
   ItemAttTest(); // to init members
-  void SetUp();
+  void SetUp() override;
 
   // members used to populate and test fullItem:
   const StringX title, mediaType;
@@ -158,7 +158,7 @@ public:
     m_lenBytes[3] = static_cast<unsigned char>((contentLen32 >> 24) & 0xff);
   }
 
-protected:
+private:
   size_t ReadCBC(unsigned char &type, unsigned char *&data, size_t &length) override
   {
     switch (m_step++) {
@@ -187,7 +187,6 @@ protected:
     }
   }
 
-private:
   int m_step;
   unsigned char m_lenBytes[4];
 };
@@ -246,7 +245,7 @@ TEST_F(ItemAttTest, ImpExp)
   FILE *f2 = pws_os::FOpen(testExpFile, L"rb");
   EXPECT_EQ(pws_os::fileLength(f1), pws_os::fileLength(f2));
 
-  size_t flen = static_cast<size_t>(pws_os::fileLength(f1));
+  size_t flen = pws_os::fileLength(f1);
   unsigned char *m1 = new unsigned char[flen];
   unsigned char *m2 = new unsigned char[flen];
 
@@ -303,7 +302,6 @@ TEST_F(ItemAttTest, Getters_n_Setters)
   ai.SetContent(content, sizeof(content));
 
   time_t tVal = 0;
-  unsigned char *contentVal;
 
   EXPECT_EQ(uuid, ai.GetUUID());
   EXPECT_EQ(title, ai.GetTitle());
@@ -311,7 +309,7 @@ TEST_F(ItemAttTest, Getters_n_Setters)
   ASSERT_EQ(sizeof(content), ai.GetContentLength());
 
   size_t contentSize = ai.GetContentSize();
-  contentVal = new unsigned char[contentSize];
+  unsigned char *contentVal = new unsigned char[contentSize];
 
   EXPECT_FALSE(ai.GetContent(contentVal, contentSize - 1));
   EXPECT_TRUE(ai.GetContent(contentVal, contentSize));
