@@ -124,7 +124,7 @@ PWScore::~PWScore()
   // do NOT trash m_session_*, as there may be other cores around
   // relying on it. Trashing the ciphertext encrypted with it is enough
   const unsigned int BS = TwoFish::BLOCKSIZE;
-  if (m_passkey_len > 0) {
+  if (m_passkey != nullptr) {
     trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
     delete[] m_passkey;
     m_passkey = nullptr;
@@ -431,13 +431,12 @@ void PWScore::DoReplaceAttachment(const CItemAtt &old_cia, const CItemAtt &new_c
 void PWScore::ClearDBData()
 {
   const unsigned int BS = TwoFish::BLOCKSIZE;
-  if (m_passkey_len > 0) {
+  if (m_passkey != nullptr) {
     trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
     delete[] m_passkey;
     m_passkey = nullptr;
-    m_passkey_len = 0;
   }
-  m_passkey = nullptr;
+  m_passkey_len = 0;
 
   //Composed of ciphertext, so doesn't need to be overwritten
   m_pwlist.clear();
@@ -1733,12 +1732,15 @@ void PWScore::SetPassKey(const StringX &new_passkey)
   // Only used when opening files and for new files
   const unsigned int BS = TwoFish::BLOCKSIZE;
   // if changing, clear old
-  if (m_passkey_len > 0) {
+  if (m_passkey != nullptr) {
     trashMemory(m_passkey, ((m_passkey_len + (BS -1)) / BS) * BS);
     delete[] m_passkey;
+    m_passkey = nullptr;
   }
 
   m_passkey_len = new_passkey.length() * sizeof(TCHAR);
+  if (m_passkey_len == 0)
+    return; // nothing to store, m_passkey stays nullptr
 
   size_t BlockLength = ((m_passkey_len + (BS - 1)) / BS) * BS;
   m_passkey = new unsigned char[BlockLength];

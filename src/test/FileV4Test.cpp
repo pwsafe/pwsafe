@@ -489,6 +489,24 @@ TEST_F(FileV4Test, CoreReadFileReplacesYubiSK)
   EXPECT_EQ(1U, core.GetNumEntries());
 }
 
+TEST_F(FileV4Test, CoreEmptyPassKey)
+{
+  // Regression case: an empty passkey used to allocate a zero-length buffer that was never
+  // freed when it was replaced, cleared or the core was destroyed, since
+  // freeing was conditional on m_passkey_len > 0 (run with ASan).
+
+  // Replace empty passkey
+  core.SetPassKey(_T(""));
+  core.SetPassKey(passphrase);
+
+  // Clear empty passkey
+  core.SetPassKey(_T(""));
+  core.ClearDBData();
+
+  // Leave an empty passkey for the destructor
+  core.SetPassKey(_T(""));
+}
+
 TEST_F(FileV4Test, CoreRWTest)
 {
   const StringX passkey(L"3rdMambo");
