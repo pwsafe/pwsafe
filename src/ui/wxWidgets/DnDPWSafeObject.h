@@ -99,9 +99,10 @@ public:
 
   virtual bool SetData(size_t len, const void *pBuf) wxOVERRIDE
   {
-    if(! pBuf) return false;
+    // Consistent with the other wx implementations of this method - clear first, even if incoming data is empty
     delete m_object;
-    if(! len) return false;
+    m_object = nullptr;
+    if (!pBuf || !len) return false;
     m_object = new wxMemoryBuffer(len);
     wxASSERT_MSG(m_object, "memory not allocated");
     m_object->AppendData(pBuf, len);
