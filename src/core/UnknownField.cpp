@@ -13,13 +13,15 @@ UnknownFieldEntry::UnknownFieldEntry(unsigned char t, size_t s,
                                      const unsigned char *d)
 {
   uc_Type = t;
-  st_length =s;
-  if (d != nullptr) {
-    ASSERT(s != 0);
+  ASSERT(d == nullptr || s > 0);
+  if (d != nullptr && s > 0) {
+    st_length = s;
     uc_pUField = new unsigned char[s];
     memcpy(uc_pUField, d, s);
-  } else
+  } else {
+    st_length = 0;
     uc_pUField = nullptr;
+  }
 }
 
 UnknownFieldEntry::~UnknownFieldEntry()

@@ -11,9 +11,11 @@
 #endif
 
 #include "core/ItemField.h"
+#include "core/UnknownField.h"
 #include "core/crypto/BlowFish.h"
 #include "crypto/sha1.h"
 #include "gtest/gtest.h"
+#include "TestCommon.h"
 
 class NullFish : public Fish
 {
@@ -76,4 +78,42 @@ TEST_F(ItemFieldTest, testMe)
   i1.Get(v2, lenV2, m_bf);
   EXPECT_EQ(sizeof(v1), lenV2);
   EXPECT_TRUE(memcmp(v1, v2, sizeof(v1)) == 0);
+}
+
+TEST(UnknownFieldEntryTest, Construct)
+{
+  const unsigned char data[] = {0x01, 0x02, 0x03};
+
+  UnknownFieldEntry e1(0x42, sizeof(data), data);
+  EXPECT_EQ(0x42, e1.uc_Type);
+  EXPECT_EQ(sizeof(data), e1.st_length);
+  ASSERT_NE(nullptr, e1.uc_pUField);
+  EXPECT_NE(data, e1.uc_pUField);
+  EXPECT_EQ(0, memcmp(data, e1.uc_pUField, sizeof(data)));
+
+  UnknownFieldEntry e2(0x42, 0, nullptr);
+  EXPECT_EQ(0U, e2.st_length);
+  EXPECT_EQ(nullptr, e2.uc_pUField);
+
+  // No data, so the length must be dropped too
+  UnknownFieldEntry e3(0x42, sizeof(data), nullptr);
+  EXPECT_EQ(0U, e3.st_length);
+  EXPECT_EQ(nullptr, e3.uc_pUField);
+}
+
+TEST(UnknownFieldEntryDeathTest, ZeroLengthData)
+{
+  // Data with a zero length ASSERTs in debug builds, and in release builds
+  // must not allocate (regression: the destructor skipped deleting it when
+  // st_length was 0 - run with ASan)
+  const unsigned char data[] = {0x01, 0x02, 0x03};
+
+#ifdef NDEBUG
+  UnknownFieldEntry e(0x42, 0, data);
+  EXPECT_EQ(0x42, e.uc_Type);
+  EXPECT_EQ(0U, e.st_length);
+  EXPECT_EQ(nullptr, e.uc_pUField);
+#else
+  EXPECT_DEATH({ DEATH_GUARD; UnknownFieldEntry e(0x42, 0, data); }, "Assertion");
+#endif
 }
