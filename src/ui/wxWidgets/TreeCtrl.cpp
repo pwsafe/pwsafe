@@ -1393,7 +1393,7 @@ void TreeCtrl::OnBeginDrag(wxTreeEvent& evt)
     return;
   }
 
-  if (item.IsOk() && (GetRootItem() != item)) {
+  if (item.IsOk() && GetRootItem() != item) {
     m_drag_item = item;
     m_had_been_out = false;
     if(PWSprefs::GetInstance()->GetPref(PWSprefs::DragAndDropShowRoot)) // Show root for hard core user, setting in XML config only
@@ -1402,6 +1402,7 @@ void TreeCtrl::OnBeginDrag(wxTreeEvent& evt)
     markDragItem(item);
     Refresh();
     resetDragItems(true);
+    wxDELETE(m_drag_image);
     m_drag_image = new wxDragImage(*this, item);
     if(m_drag_image) {
       wxPoint mousePt = ScreenToClient(wxGetMousePosition());
