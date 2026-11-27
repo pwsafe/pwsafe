@@ -17,7 +17,7 @@
 
 #include <vector>
 
-class AliasShortcutTest : public ::testing::Test
+class AliasShortcutTest : public testing::Test
 {
 protected:
   AliasShortcutTest() {}
@@ -31,8 +31,8 @@ protected:
     CItemData::PASSKEY_PRIVATE_KEY,
     CItemData::PASSKEY_SIGN_COUNT
   };
-  void SetUp();
-  void TearDown();
+  void SetUp() override;
+  void TearDown() override;
 };
 
 void AliasShortcutTest::TearDown()

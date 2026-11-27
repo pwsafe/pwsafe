@@ -15,7 +15,7 @@
 #include "gtest/gtest.h"
 
 // A fixture for factoring common code across tests
-class MRUListTest : public ::testing::Test
+class MRUListTest : public testing::Test
 {
 protected:
   MRUListTest();
@@ -115,7 +115,7 @@ TEST_F(MRUListTest, MRUList)
 #ifndef WIN32
 #include "ui/wxWidgets/RecentDbList.h"
 
-class RecentDBTest : public ::testing::Test
+class RecentDBTest : public testing::Test
 {
 protected:
   RecentDBTest();
@@ -214,11 +214,10 @@ TEST_F(RecentDBTest, RecentList)
 
 TEST_F(RecentDBTest, RecentListLimit)
 {
-  int is;
   wxArrayString GotStrings;
 
   prefs->SetPref(PWSprefs::MaxMRUItems, 4);
-  is = prefs->SetMRUList(MRUFiles, 10);
+  int is = prefs->SetMRUList(MRUFiles, 10);
   EXPECT_EQ(is, 5);
 
   // Initialize after MaxMRUItems is set
@@ -249,13 +248,12 @@ TEST_F(RecentDBTest, RecentListLimit)
 
 TEST_F(RecentDBTest, RecentListLimit0)
 {
-  int is, ig;
   wxArrayString GotStrings;
   std::vector<stringT> MRURet;
 
   prefs->SetPref(PWSprefs::MaxMRUItems, 0);
-  is = prefs->SetMRUList(MRUFiles, 10);
-  ig = prefs->GetMRUList(MRURet);
+  int is = prefs->SetMRUList(MRUFiles, 10);
+  int ig = prefs->GetMRUList(MRURet);
   EXPECT_EQ(is, 5);
   EXPECT_EQ(ig, 0);
 

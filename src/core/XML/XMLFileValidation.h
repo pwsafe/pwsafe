@@ -27,6 +27,15 @@ XERCES_CPP_NAMESPACE_USE
 
 // Elements stack value
 // XML fiLe Elements = 'XLE' prefix
+//
+// NOTE: The code assumes a certain order of the enum values below and their
+// grouping by purpose (e.g., range checks such as XLE_GROUP..XLE_LAST_ELEMENT,
+// XLE_CUSTOM_FIELD..XLE_CUSTOM_FIELD_SENSITIVE and
+// XLE_HISTORY_ENTRY..XLE_OLDPASSWORD in XMLFileHandlers::ProcessEndElement(),
+// and the XLE_ELEMENTS calculation below) - DO NOT reorder or regroup them.
+// New values should either go into an existing group (e.g., a new entry field)
+// or into a new group at the end, just before XLE_LAST_ELEMENT (e.g., a new
+// complex field with nested items).
 
 enum XLE_PASSWORDSAFE {
   XLE_PASSWORDSAFE            = 0,

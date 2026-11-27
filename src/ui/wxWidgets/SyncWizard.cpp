@@ -132,6 +132,9 @@ struct SyncFieldSelection {
       case CItemData::GROUP:
       case CItemData::USER:
       case CItemData::TITLE:
+      // Attachment title & file name are selectable for Find only
+      case CItemData::DATA_ATT_TITLE:
+      case CItemData::DATA_ATT_FILENAME:
         return false;
       default:
         return true;

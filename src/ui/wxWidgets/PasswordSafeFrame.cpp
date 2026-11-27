@@ -1279,6 +1279,18 @@ void PasswordSafeFrame::SetTitle(const wxString& title)
 int PasswordSafeFrame::Load(const StringX &passwd)
 {
   int status = m_core.ReadCurFile(passwd);
+  if (status == PWScore::BAD_DIGEST || status == PWScore::TRUNCATED_FILE) {
+    // Corruption/truncation is detected after zero or more records have been
+    // read into the core, so ask the user whether to use them.
+    if (wxMessageBox(towxstring(m_core.GetCurFile()) << wxT("\n\n") << _("File corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"),
+                     _("File Read Error"), wxYES_NO | wxICON_QUESTION, this) == wxYES)
+      status = PWScore::SUCCESS;
+    else
+      m_core.ClearDBData();
+  } else if (status != PWScore::SUCCESS) {
+    wxMessageBox(towxstring(m_core.GetCurFile()) << wxT("\n\n") << _("Unspecified read error ") << status,
+                 _("File Read Error"), wxOK | wxICON_ERROR, this);
+  }
   if (status == PWScore::SUCCESS) {
     wxGetApp().ConfigureIdleTimer();
     SetTitle(m_core.GetCurFile().c_str());
@@ -2766,7 +2778,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
         }
         else {
           // With modal dialog open we now have a problem, no data base open, but a modal dialog is open that might show an entry
-          CleanupAfterReloadFailure(true);
+          CleanupAfterReloadFailure(false); // Load() has already told the user why
           if(!m_hiddenWindows.empty()) {
             CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), static_cast<CloseFlags>(CloseFlags::CLOSE_FORCED|CloseFlags::LEAVE_MAIN), nullptr);
           }

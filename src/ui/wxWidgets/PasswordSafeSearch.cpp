@@ -416,6 +416,8 @@ struct FindDlgType {
       case CItemData::RUNCMD:
       case CItemData::EMAIL:
       case CItemData::SYMBOLS:
+      case CItemData::DATA_ATT_TITLE:
+      case CItemData::DATA_ATT_FILENAME:
         return true;
       default:
         return false;

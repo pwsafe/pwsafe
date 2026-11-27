@@ -86,7 +86,8 @@ PWSfileV4::CKeyBlocks& PWSfileV4::CKeyBlocks::operator=(const PWSfileV4::CKeyBlo
 
 PWSfileV4::PWSfileV4(const StringX &filename, RWmode mode, VERSION version)
   : PWSfile(filename, mode, version),
-    m_effectiveFileLength(0), m_nHashIters(MIN_V4_HASH_ITERATIONS)
+    m_effectiveFileLength(0), m_nHashIters(MIN_V4_HASH_ITERATIONS),
+    m_readFailed(false)
 {
   m_IV = m_ipthing;
   m_terminal = nullptr;
@@ -184,7 +185,7 @@ int PWSfileV4::Close()
       PWSfile::Close();
       return TRUNCATED_FILE;
     }
-    if (memcmp(d, digest, SHA256::HASHLEN) == 0)
+    if (!m_readFailed && memcmp(d, digest, SHA256::HASHLEN) == 0)
       return PWSfile::Close();
     else {
       PWSfile::Close();
@@ -367,6 +368,12 @@ size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
     m_hmac.Update(buf, sizeof(buf));
     m_hmac.Update(data, static_cast<unsigned long>(length));
   }
+
+  // A block that couldn't be read as a field has still been consumed
+  // (and is the CBC IV of the next one), but the HMAC doesn't cover it:
+  // remember it for Close() rather than let the file pass as intact.
+  if (numRead == 0)
+    m_readFailed = true;
 
   return numRead;
 }

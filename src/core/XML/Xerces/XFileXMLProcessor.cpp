@@ -117,6 +117,9 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   pSAX2Parser->setFeature(XMLUni::fgXercesLoadExternalDTD, false);
   pSAX2Parser->setFeature(XMLUni::fgXercesSkipDTDValidation, true);
   pSAX2Parser->setFeature(XMLUni::fgXercesDisableDefaultEntityResolution, true);
+  // Only use the schema set below, never one named by the document
+  // (xsi:schemaLocation / xsi:noNamespaceSchemaLocation)
+  pSAX2Parser->setFeature(XMLUni::fgXercesLoadSchema, false);
 
   // Set properties
   pSAX2Parser->setProperty(XMLUni::fgXercesScannerName,

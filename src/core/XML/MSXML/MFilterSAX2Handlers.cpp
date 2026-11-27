@@ -128,6 +128,8 @@ MFilterSAX2ContentHandler::MFilterSAX2ContentHandler()
   m_pSchema_Version = nullptr;
   m_iXMLVersion = -1;
   m_iSchemaVersion = -1;
+  cur_filter = nullptr;
+  cur_filterentry = nullptr;
   m_pAsker = nullptr;
 }
 

@@ -20,7 +20,7 @@ class NullFish : public Fish
 public:
   NullFish() {}
   virtual ~NullFish() {}
-virtual unsigned int GetBlockSize() const {return 8;}
+  virtual unsigned int GetBlockSize() const {return 8;}
   // Following encrypt/decrypt a single block
   // (blocksize dependent on cipher)
   virtual void Encrypt(const unsigned char *pt, unsigned char *ct) const
@@ -29,9 +29,8 @@ virtual unsigned int GetBlockSize() const {return 8;}
   {memcpy(pt, ct, GetBlockSize());}
 };
 
-class ItemFieldTest : public ::testing::Test
+class ItemFieldTest : public testing::Test
 {
-
 public:
   ItemFieldTest()
     {

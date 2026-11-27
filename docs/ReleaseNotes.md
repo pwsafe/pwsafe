@@ -11,6 +11,7 @@ Bugs fixed in 3.73.1
 * [GH1997](https://github.com/pwsafe/pwsafe/issues/1997) It's now possible to remove a malformed filter that's stored in the database by clicking on "No" in the error message.
 * [GH1963](https://github.com/pwsafe/pwsafe/issues/1963) The MSI installer now removes previous version when updating to the latest. Stored passwords and prfererence settings are preserved.
 * [GH1953](https://github.com/pwsafe/pwsafe/issues/1953) When dragging an entry with a named password policy between instances (drag & drop), the named policy is now added correctly to the receiver.
+* [SF1638](https://sourceforge.net/p/passwordsafe/bugs/1638/) Find now also searches attachment file name and title fields.
 * [SF1637](https://sourceforge.net/p/passwordsafe/bugs/1637/) Notes no longer scroll to the bottom when an entry is opened with "Show Notes in Edit" enabled.
 
 PasswordSafe 3.73.0 Release October 8 2026
