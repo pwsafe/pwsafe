@@ -14,6 +14,7 @@
 #include "Options_PropertySheet.h"
 #include "GeneralMsgBox.h"
 
+#include "core/HashIters.h"
 #include "core/PWSprefs.h"
 #include "os/env.h"
 
@@ -129,7 +130,7 @@ BOOL COptionsSecurity::OnInitDialog()
   pspin->SetPos(m_IdleTimeOut);
 
   CSliderCtrl *pslider = (CSliderCtrl *)GetDlgItem(IDC_HASHITERSLIDER);
-  pslider->SetRange(0, PWSfile::MAX_UNLOCK_DIFFICULTY);
+  pslider->SetRange(0, MAX_UNLOCK_DIFFICULTY);
   pslider->SetTicFreq(1);
   pslider->SetPos(m_HashIterSliderValue);
 
@@ -161,14 +162,13 @@ BOOL COptionsSecurity::OnInitDialog()
 void COptionsSecurity::UpdateHashIter()
 {
   // Keeps the database's exact value if slider not moved (SF1640)
-  m_HashIter = PWSfile::UnlockDifficultyToHashIters(m_HashIterSliderValue,
-                                                    m_OrigHashIter);
+  m_HashIter = UnlockDifficultyToHashIters(m_HashIterSliderValue, m_OrigHashIter);
 }
 
 void COptionsSecurity::SetHashIter(uint32 value)
 {
   m_OrigHashIter = value;
-  m_HashIterSliderValue = PWSfile::HashItersToUnlockDifficulty(value);
+  m_HashIterSliderValue = HashItersToUnlockDifficulty(value);
   UpdateHashIter();
 }
 

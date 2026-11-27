@@ -25,14 +25,7 @@
 #include "crypto/sha256.h"
 
 #include "coredefs.h"
-
-// HASH_ITERATIONS is used by the key stretching algorithm.
-// MIN_HASH_ITERATIONS is a lower limit - anything lower than this
-// is considered inherently insecure.
-#define MIN_HASH_ITERATIONS 0x50000  // 327,680 
-// MAX_USABLE_HASH_ITERS is a guesstimate on what's acceptable to a user
-// with a reasonably powerful CPU. Real limit's 2^32-1.
-#define MAX_USABLE_HASH_ITERS (1 << 25)
+#include "HashIters.h" // MIN_HASH_ITERATIONS, MAX_USABLE_HASH_ITERS
 
 #define V3_SUFFIX      _T("psafe3")
 #define V4_SUFFIX      _T("psafe4")
@@ -108,25 +101,6 @@ public:
   static bool Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess);
   static bool Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess);
   static size_t fileThresholdSize; // files this size and above encrypted differently - configurable for testing
-
-  /**
-   * Hash iterations is the value we use in the database. Unlock Difficulty is what the user sees (as a slider).
-   * Here we map between them for all UI platforms.
-   * Iterations are between MIN_HASH_ITERATIONS and MAX_USABLE_HASH_ITERS, with the former being increased
-   * periodically to keep up with Moore's law.
-   * Unlock Difficulty is between 0 and MAX_UNLOCK_DIFFICULTY.
-   * We maintain a linear mapping between the two ranges.
-   */
-
-  static constexpr int MAX_UNLOCK_DIFFICULTY = 31;
-
-  // Returns the lowest level whose iteration count is >= iters,
-  // so that a value between levels is never shown as weaker than it is.
-  static int HashItersToUnlockDifficulty(uint32 iters);
-  static uint32 UnlockDifficultyToHashIters(int level);
-  // As above, but if level is what currentIters maps to (i.e., the user didn't change it),
-  // returns currentIters unchanged, so that it's never modified unintentionally (SF1640).
-  static uint32 UnlockDifficultyToHashIters(int level, uint32 currentIters);
 
   virtual ~PWSfile();
 

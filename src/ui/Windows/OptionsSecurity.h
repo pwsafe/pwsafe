@@ -24,7 +24,7 @@ public:
   ~COptionsSecurity();
 
   // These map between slider values and hash iterations,
-  // via PWSfile's UnlockDifficulty mapping
+  // via the UnlockDifficulty mapping in core/HashIters.h
   uint32 GetHashIter() const {return m_HashIter;}
   void SetHashIter(uint32 value);
   void UpdateHashIter(); // slider to value

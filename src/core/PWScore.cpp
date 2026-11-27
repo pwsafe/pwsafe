@@ -1313,6 +1313,8 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   // Silently raise a below-minimum iteration count to the current minimum.
   // The new value will be written iff the DB is saved for some other reason.
+  // The file classes also clamp when writing; this is here so that
+  // GetHashIters() (and hence the UI) reports the value actually in effect.
   const uint32 fileHashIters = in->GetNHashIters();
   m_hashIters = std::max<uint32>(fileHashIters, MIN_HASH_ITERATIONS);
   if (m_hashIters != fileHashIters) {
