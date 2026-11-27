@@ -23,8 +23,8 @@ public:
   COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD);
   ~COptionsSecurity();
 
-  // These map between slider values and
-  // MIN_HASH_ITERATIONS..MAX_USABLE_HASH_ITERS
+  // These map between slider values and hash iterations,
+  // via the UnlockDifficulty mapping in core/HashIters.h
   uint32 GetHashIter() const {return m_HashIter;}
   void SetHashIter(uint32 value);
   void UpdateHashIter(); // slider to value
@@ -46,9 +46,11 @@ protected:
   int m_IdleTimeOut;
   //}}AFX_DATA
 
-  enum {MinHIslider = 0, MaxHIslider = 31};
   int m_HashIterSliderValue;
   uint32 m_HashIter;
+  // Value passed to SetHashIter.
+  // If the user doesn't move the slider, keep the original value.
+  uint32 m_OrigHashIter;
 
   CButtonExtn m_chkbox[2];
   CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;

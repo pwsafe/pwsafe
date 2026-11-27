@@ -14,6 +14,7 @@
 #include "Options_PropertySheet.h"
 #include "GeneralMsgBox.h"
 
+#include "core/HashIters.h"
 #include "core/PWSprefs.h"
 #include "os/env.h"
 
@@ -35,7 +36,7 @@ IMPLEMENT_DYNAMIC(COptionsSecurity, COptions_PropertyPage)
 
 COptionsSecurity::COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD)
 : COptions_PropertyPage(pParent, COptionsSecurity::IDD, pOPTMD),
-  m_HashIterSliderValue(0), m_HashIter(0)
+  m_HashIterSliderValue(0), m_HashIter(0), m_OrigHashIter(0)
 {
   m_ClearClipboardOnMinimize = M_ClearClipboardOnMinimize();
   m_ClearClipboardOnExit = M_ClearClipboardOnExit();
@@ -129,7 +130,7 @@ BOOL COptionsSecurity::OnInitDialog()
   pspin->SetPos(m_IdleTimeOut);
 
   CSliderCtrl *pslider = (CSliderCtrl *)GetDlgItem(IDC_HASHITERSLIDER);
-  pslider->SetRange(MinHIslider, MaxHIslider);
+  pslider->SetRange(0, MAX_UNLOCK_DIFFICULTY);
   pslider->SetTicFreq(1);
   pslider->SetPos(m_HashIterSliderValue);
 
@@ -160,22 +161,14 @@ BOOL COptionsSecurity::OnInitDialog()
 
 void COptionsSecurity::UpdateHashIter()
 {
-  if (m_HashIterSliderValue <= MinHIslider) {
-    m_HashIter = MIN_HASH_ITERATIONS;
-  } else {
-    const int step = MAX_USABLE_HASH_ITERS/(MaxHIslider - MinHIslider);
-    m_HashIter = uint32(m_HashIterSliderValue * step);
-  }
+  // Keeps the database's exact value if slider not moved (SF1640)
+  m_HashIter = UnlockDifficultyToHashIters(m_HashIterSliderValue, m_OrigHashIter);
 }
 
 void COptionsSecurity::SetHashIter(uint32 value)
 {
-  if (value <= MIN_HASH_ITERATIONS) {
-    m_HashIterSliderValue = MinHIslider;
-  } else {
-    const int step = MAX_USABLE_HASH_ITERS/(MaxHIslider - MinHIslider);
-    m_HashIterSliderValue = int(value) / step;
-  }
+  m_OrigHashIter = value;
+  m_HashIterSliderValue = HashItersToUnlockDifficulty(value);
   UpdateHashIter();
 }
 
