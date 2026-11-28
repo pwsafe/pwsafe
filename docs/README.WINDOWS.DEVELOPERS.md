@@ -44,7 +44,7 @@ Assuming you have already cloned the Password Safe repository to your machine, a
 Alternately, you can generate a solution file as follows:
 
 # Generating a Solution
-Run cmake -S . -B _build to generate the build files from the pwsafe folder, or use cmake-gui as described in [README.CMAKE.md](https://github.com/pwsafe/pwsafe/blob/master/README.CMAKE.md).
+Run cmake -S . -B _build to generate the build files from the pwsafe folder, or use cmake-gui as described in [README.CMAKE.md](https://github.com/pwsafe/pwsafe/blob/master/docs/README.CMAKE.md).
 
 Double click on the generated _build/passwordsafe.sln file to open Visual Studio.
 
