@@ -12,6 +12,9 @@ pwsafe \- Secure Password Manager
 .B ] [ -h
 .I host
 .B ]
+.B [ --yubi-polling-interval
+.I ms
+.B ]
 .B [-r]
 .B [
 .I database
@@ -45,6 +48,13 @@ This will cause the application to read and write preferences under
 the specified 
 .I host
 , instead of under the machine's name.
+.IP --yubi-polling-interval
+.I ms
+This will set the interval, in milliseconds, at which the application polls
+for a YubiKey. The default is 900. Values below 100 are raised to 100 and
+values above 60000 are lowered to 60000. A value of 0 disables polling.
+This option is available only if the application was built with YubiKey
+support.
 .IP -r
 .I [database]
 This will open the specified database in read-only mode. If a database
