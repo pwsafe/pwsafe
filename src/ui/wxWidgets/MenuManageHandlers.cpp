@@ -61,7 +61,7 @@ void PasswordSafeFrame::DoChangePassword()
     m_core.ChangePasskey(window->GetNewpasswd());
 #ifndef NO_YUBI
   if (!window->IsYubiProtected())
-    m_core.SetYubiSK(nullptr); // erase YubiSK, as it's no longer protected by Yuibkey
+    m_core.SetYubiSK(nullptr, 0); // erase YubiSK, as it's no longer protected by Yubikey
 #endif
   }
 }

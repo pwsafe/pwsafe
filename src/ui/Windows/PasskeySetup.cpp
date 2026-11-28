@@ -314,7 +314,7 @@ void CPasskeySetup::YubiInitialize()
   unsigned char sk[CYubiCfgDlg::YUBI_SK_LEN];
   pws_os::GetRandomData(sk, CYubiCfgDlg::YUBI_SK_LEN);
   if (ycd.WriteYubiSK(sk) == YKLIB_OK) {
-      m_core.SetYubiSK(sk);
+      m_core.SetYubiSK(sk, sizeof(sk));
       gmb.AfxMessageBox(IDS_YUBI_INIT_SUCCESS,
                         MB_OK | MB_ICONINFORMATION);
       PostMessage(WM_COMMAND, IDC_YUBIKEY_BTN);

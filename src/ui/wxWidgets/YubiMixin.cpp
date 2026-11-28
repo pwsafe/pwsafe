@@ -34,12 +34,14 @@ void YubiMixin::SetupMixin(wxEvtHandler *eventHandler, wxWindow *btn, wxWindow *
   m_btn = btn;
   m_status = status;
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
-  if ((m_btn != nullptr) && (m_status != nullptr)) {
+  if (m_btn != nullptr && m_status != nullptr) {
     // Hide Yubi controls if user doesn't have one:
     m_btn->Show(yubiExists());
     m_status->Show(yubiExists());
-    if (IsPollingEnabled() && (timerId != YubiMixin::POLLING_TIMER_NONE)) {
-      m_pollingTimer = new wxTimer(eventHandler, timerId);
+    if (IsPollingEnabled() && timerId != YubiMixin::POLLING_TIMER_NONE) {
+      if (m_pollingTimer == nullptr) {
+        m_pollingTimer = new wxTimer(eventHandler, timerId);
+      }
       m_pollingTimer->Start(GetPollingInterval());
     }
   }

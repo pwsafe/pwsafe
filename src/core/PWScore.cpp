@@ -124,8 +124,8 @@ PWScore::~PWScore()
   // do NOT trash m_session_*, as there may be other cores around
   // relying on it. Trashing the ciphertext encrypted with it is enough
   const unsigned int BS = TwoFish::BLOCKSIZE;
-  if (m_passkey_len > 0) {
-    trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
+  if (m_passkey != nullptr) {
+    trashMemory(m_passkey, roundUp(m_passkey_len, BS));
     delete[] m_passkey;
     m_passkey = nullptr;
     m_passkey_len = 0;
@@ -431,13 +431,12 @@ void PWScore::DoReplaceAttachment(const CItemAtt &old_cia, const CItemAtt &new_c
 void PWScore::ClearDBData()
 {
   const unsigned int BS = TwoFish::BLOCKSIZE;
-  if (m_passkey_len > 0) {
-    trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
+  if (m_passkey != nullptr) {
+    trashMemory(m_passkey, roundUp(m_passkey_len, BS));
     delete[] m_passkey;
     m_passkey = nullptr;
-    m_passkey_len = 0;
   }
-  m_passkey = nullptr;
+  m_passkey_len = 0;
 
   //Composed of ciphertext, so doesn't need to be overwritten
   m_pwlist.clear();
@@ -1064,10 +1063,14 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
       pws_os::setenv("PWS_PK_CP_ACP", ""); // no unsetenv() in Windows...
     }
   } else { // can happen if tries to export b4 save
-    size_t t_passkey_len = passkey.length();
-    if (t_passkey_len != m_passkey_len) // trivial test
+    size_t t_passkey_len = passkey.length() * sizeof(TCHAR);
+    if (t_passkey_len != m_passkey_len) // trivial test - cleartext lengths must match
       return WRONG_PASSWORD;
-    size_t BlockLength = ((m_passkey_len + 7) / 8) * 8;
+    // Both empty: nothing to encrypt or compare (m_passkey is nullptr)
+    if (m_passkey_len == 0)
+      return PWSfile::SUCCESS;
+    const unsigned int BS = TwoFish::BLOCKSIZE;
+    size_t BlockLength = roundUp(m_passkey_len, BS);
     auto *t_passkey = new unsigned char[BlockLength];
     auto plaintext = passkey.c_str();
     EncryptPassword(reinterpret_cast<const unsigned char *>(plaintext), t_passkey_len, t_passkey);
@@ -1706,7 +1709,6 @@ void PWScore::EncryptPassword(const unsigned char *plaintext, size_t len,
   // Chicken out of an interface change, or just a sanity check?
   // Maybe both...
   ASSERT(len > 0);
-  auto ulen = static_cast<unsigned int>(len);
 
   const unsigned int BS = TwoFish::BLOCKSIZE;
 
@@ -1717,13 +1719,12 @@ void PWScore::EncryptPassword(const unsigned char *plaintext, size_t len,
   if (!pws_os::mcryptProtect(m_session_key, sizeof(m_session_key))) {
     pws_os::Trace(_T("pws_os::mcryptProtect failed"));
   }
-  unsigned int BlockLength = ((ulen + (BS - 1)) / BS) * BS;
+  size_t BlockLength = roundUp(len, BS);
   unsigned char curblock[BS];
 
-  for (unsigned int x = 0; x < BlockLength; x += BS) {
+  for (size_t x = 0; x < BlockLength; x += BS) {
     unsigned int i;
-    if ((ulen == 0) ||
-      ((ulen % BS != 0) && (ulen - x < BS))) {
+    if (len == 0 || (len % BS != 0 && len - x < BS)) {
         //This is for an uneven last block
         memset(curblock, 0, BS);
         for (i = 0; i < len % BS; i++)
@@ -1743,14 +1744,17 @@ void PWScore::SetPassKey(const StringX &new_passkey)
   // Only used when opening files and for new files
   const unsigned int BS = TwoFish::BLOCKSIZE;
   // if changing, clear old
-  if (m_passkey_len > 0) {
+  if (m_passkey != nullptr) {
     trashMemory(m_passkey, ((m_passkey_len + (BS -1)) / BS) * BS);
     delete[] m_passkey;
+    m_passkey = nullptr;
   }
 
   m_passkey_len = new_passkey.length() * sizeof(TCHAR);
+  if (m_passkey_len == 0)
+    return; // nothing to store, m_passkey stays nullptr
 
-  size_t BlockLength = ((m_passkey_len + (BS - 1)) / BS) * BS;
+  size_t BlockLength = roundUp(m_passkey_len, BS);
   m_passkey = new unsigned char[BlockLength];
   auto plaintext = new_passkey.c_str();
   EncryptPassword(reinterpret_cast<const unsigned char *>(plaintext), m_passkey_len, m_passkey);
@@ -1761,7 +1765,7 @@ StringX PWScore::GetPassKey() const
   StringX retval(_T(""));
   if (m_passkey_len > 0) {
     const unsigned int BS = TwoFish::BLOCKSIZE;
-    size_t BlockLength = ((m_passkey_len + (BS - 1)) / BS) * BS;
+    size_t BlockLength = roundUp(m_passkey_len, BS);
     if (!pws_os::mcryptUnprotect(m_session_key, sizeof(m_session_key))) {
       pws_os::Trace(_T("pws_os::mcryptUnprotect failed"));
     }
@@ -1770,7 +1774,7 @@ StringX PWScore::GetPassKey() const
       pws_os::Trace(_T("pws_os::mcryptProtect failed"));
     }
     unsigned char curblock[BS];
-    for (unsigned int x = 0; x < BlockLength; x += BS) {
+    for (size_t x = 0; x < BlockLength; x += BS) {
       unsigned int i;
       for (i = 0; i < BS; i++) {
         curblock[i] = m_passkey[x + i];
@@ -3394,16 +3398,9 @@ const unsigned char *PWScore::GetYubiSK() const
   return m_hdr.m_yubi_sk;
 }
 
-void PWScore::SetYubiSK(const unsigned char *sk)
+bool PWScore::SetYubiSK(const unsigned char *sk, size_t skLen)
 {
-  if (m_hdr.m_yubi_sk)
-    trashMemory(m_hdr.m_yubi_sk, PWSfileHeader::YUBI_SK_LEN);
-  delete[] m_hdr.m_yubi_sk;
-  m_hdr.m_yubi_sk = nullptr;
-  if (sk != nullptr) {
-    m_hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
-    memcpy(m_hdr.m_yubi_sk, sk, PWSfileHeader::YUBI_SK_LEN);
-  }
+  return m_hdr.SetYubiSK(sk, skLen);
 }
 
 bool PWScore::SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC)

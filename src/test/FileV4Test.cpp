@@ -254,6 +254,45 @@ TEST_F(FileV4Test, HeaderTest)
   EXPECT_NE(hdr1.m_yubi_sk, hdr2.m_yubi_sk);
 }
 
+TEST_F(FileV4Test, HeaderDuplicateYubiSK)
+{
+  // Regression case: a repeated YubiKey SK header field leaked the previous
+  // copy (run with ASan). The file must still open, with the last SK winning.
+  const unsigned char sk1[PWSfileHeader::YUBI_SK_LEN] = {
+    0xf0, 0xe1, 0xd2, 0xc3, 0xb4, 0xa5, 0x96, 0x87, 0x78, 0x69,
+    0x5a, 0x4b, 0x3c, 0x2d, 0x1e, 0x0f, 0xa0, 0xb1, 0xc2, 0xd3};
+  unsigned char sk2[PWSfileHeader::YUBI_SK_LEN];
+  memcpy(sk2, sk1, sizeof(sk2));
+  sk2[PWSfileHeader::YUBI_SK_LEN - 1] ^= 0xff;
+
+  const unsigned char *cases[] = {sk1, sk2};
+
+  for (size_t i = 0; i < NumberOf(cases); i++) {
+    SCOPED_TRACE(i);
+    PWSfileHeader hdr1(hdr);
+    ASSERT_TRUE(hdr1.SetYubiSK(sk1, PWSfileHeader::YUBI_SK_LEN));
+
+    PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
+    fw.SetHeader(hdr1);
+    // The extra SK field is passed as an "unknown" header field, which
+    // WriteHeader() then emits just before the regular HDR_YUBI_SK.
+    fw.SetUnknownHeaderFields(UnknownFieldList{
+      UnknownFieldEntry(PWSfile::HDR_YUBI_SK, PWSfileHeader::YUBI_SK_LEN, cases[i])});
+    ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+    ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+
+    PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
+    ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+    // The regular field, holding sk1, comes last
+    const PWSfileHeader hdr2 = fr.GetHeader();
+    ASSERT_NE(nullptr, hdr2.m_yubi_sk);
+    EXPECT_EQ(0, memcmp(sk1, hdr2.m_yubi_sk, PWSfileHeader::YUBI_SK_LEN));
+    // Close() verifies the HMAC, so read to the end first
+    EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+    EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+  }
+}
+
 TEST_F(FileV4Test, ItemTest)
 {
   PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
@@ -468,7 +507,7 @@ TEST_F(FileV4Test, CoreReadFileReplacesYubiSK)
     0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14};
 
   core.SetPassKey(passphrase);
-  core.SetYubiSK(sk);
+  ASSERT_TRUE(core.SetYubiSK(sk, sizeof(sk)));
   ASSERT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), PWSfile::V40));
 
   core.ClearDBData();
@@ -487,6 +526,68 @@ TEST_F(FileV4Test, CoreReadFileReplacesYubiSK)
   ASSERT_EQ(PWSfile::SUCCESS, core.ReadFile(fname.c_str(), passphrase, true));
   EXPECT_EQ(nullptr, core.GetYubiSK());
   EXPECT_EQ(1U, core.GetNumEntries());
+}
+
+TEST_F(FileV4Test, CoreEmptyPassKey)
+{
+  // Regression case: an empty passkey used to allocate a zero-length buffer that was never
+  // freed when it was replaced, cleared or the core was destroyed, since
+  // freeing was conditional on m_passkey_len > 0 (run with ASan).
+
+  // Replace empty passkey
+  core.SetPassKey(_T(""));
+  core.SetPassKey(passphrase);
+
+  // Clear empty passkey
+  core.SetPassKey(_T(""));
+  core.ClearDBData();
+
+  // Leave an empty passkey for the destructor
+  core.SetPassKey(_T(""));
+}
+
+TEST_F(FileV4Test, CoreCheckEmptyPassKey)
+{
+  // Regression case: checking an empty passkey against an empty in-memory
+  // passkey used to call EncryptPassword() with len 0 (asserts in debug builds)
+  // and memcmp() with a null m_passkey.
+  // An empty filename makes CheckPasskey() compare against the in-memory passkey.
+
+  core.SetPassKey(_T(""));
+  EXPECT_EQ(PWSfile::SUCCESS, core.CheckPasskey(_T(""), _T("")));
+
+  core.SetPassKey(passphrase);
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.CheckPasskey(_T(""), _T("")));
+}
+
+TEST_F(FileV4Test, CoreCheckPassKeyInMemory)
+{
+  // Regression case: CheckPasskey() compared the passkey's length in characters
+  // against the stored length in bytes, so a correct non-empty passkey was always
+  // rejected. Its buffer was also rounded to 8 bytes while EncryptPassword()
+  // writes whole TwoFish blocks (16 bytes) which triggered a buffer overflow in ASan.
+  // An empty filename makes CheckPasskey() compare against the in-memory passkey.
+
+  core.SetPassKey(passphrase);
+  EXPECT_EQ(PWSfile::SUCCESS, core.CheckPasskey(_T(""), passphrase));
+
+  // Same length, different content
+  StringX wrong(passphrase);
+  wrong[0] = wrong[0] == _T('x') ? _T('y') : _T('x');
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.CheckPasskey(_T(""), wrong));
+
+  // Different length
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.CheckPasskey(_T(""), passphrase + _T("!")));
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.CheckPasskey(_T(""), _T("")));
+
+  // Passkey shorter than half a TwoFish block
+  const StringX shortKey(_T("a"));
+  core.SetPassKey(shortKey);
+  EXPECT_EQ(PWSfile::SUCCESS, core.CheckPasskey(_T(""), shortKey));
+
+  // A passkey whose length in characters equals the stored length in bytes mustn't match
+  const StringX charsEqBytes(shortKey.length() * sizeof(TCHAR), _T('a'));
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.CheckPasskey(_T(""), charsEqBytes));
 }
 
 TEST_F(FileV4Test, CoreRWTest)

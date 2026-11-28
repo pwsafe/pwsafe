@@ -881,7 +881,7 @@ int PWSfileV4::TryKeyBlock(unsigned index, const StringX &passkey,
       
   KeyWrap kwL(&Fish);
   if (!kwL.Unwrap(kb.m_kw_l, L, sizeof(kb.m_kw_l))) {
-    ASSERT(0); // Shouln't happen if K unwrapped OK
+    ASSERT(0); // Shouldn't happen if K unwrapped OK
     return WRONG_PASSWORD;
   }
   nHashIters = kb.m_nHashIters;
@@ -1231,13 +1231,11 @@ int PWSfileV4::ReadHeader()
       }
 
     case HDR_YUBI_SK:
-      if (utf8Len != PWSfileHeader::YUBI_SK_LEN) {
+      if (!m_hdr.SetYubiSK(utf8, utf8Len)) { // last SK in the header wins
         delete[] utf8;
         Close();
         return FAILURE;
       }
-      m_hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
-      memcpy(m_hdr.m_yubi_sk, utf8, PWSfileHeader::YUBI_SK_LEN);
       break;
 
     case HDR_PSWDPOLICIES:
@@ -1308,7 +1306,7 @@ int PWSfileV4::ReadHeader()
       break;
 
     default:
-      // Save unknown fields that may be addded by future versions
+      // Save unknown fields that may be added by future versions
       UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
 
       m_UHFL.push_back(unkhfe);

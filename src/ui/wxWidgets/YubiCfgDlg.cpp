@@ -295,7 +295,7 @@ void YubiCfgDlg::OnYkSetClick( wxCommandEvent& WXUNUSED(event) )
     PWYubi yk;
     if (yk.WriteSK(yubi_sk_bin, YUBI_SK_LEN)) { // 1. Update SK on Yubi.
       // 2. If YubiKey update succeeds, update in core.
-      m_core.SetYubiSK(yubi_sk_bin);
+      m_core.SetYubiSK(yubi_sk_bin, sizeof(yubi_sk_bin));
       // 3. Write DB ASAP!
       m_core.WriteCurFile();
       trashMemory(yubi_sk_bin, YUBI_SK_LEN);

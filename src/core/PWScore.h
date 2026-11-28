@@ -500,7 +500,9 @@ public:
 
   // Yubi support:
   const unsigned char *GetYubiSK() const;
-  void SetYubiSK(const unsigned char *);
+  // Replaces the YubiKey SK with a copy of sk, or clears it if sk is nullptr.
+  // Returns false, leaving the SK unchanged, if skLen isn't YUBI_SK_LEN.
+  bool SetYubiSK(const unsigned char *sk, size_t skLen);
   
   // Password Policies
   bool IncrementPasswordPolicy(const StringX &sxPolicyName);

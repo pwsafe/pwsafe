@@ -242,6 +242,9 @@ void PWSfile::GetUnknownHeaderFields(UnknownFieldList &UHFL)
     UHFL.clear();
 }
 
+// TODO: Maybe shouldn't allow passing known field types in the list
+//  (since this could create conflicts if those fields are also
+//  set in the normal way)? Currently the list isn't validated in any way.
 void PWSfile::SetUnknownHeaderFields(const UnknownFieldList &UHFL)
 {
   if (!UHFL.empty())

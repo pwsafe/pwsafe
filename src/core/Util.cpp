@@ -284,7 +284,7 @@ size_t _writecbcRest(FILE *fp, const unsigned char *buffer, size_t length,
 
   if (length > 0 ||
       (BS == 8 && length == 0)) { // This part for bwd compat w/pre-3 format
-    size_t BlockLength = ((length + (BS - 1)) / BS) * BS;
+    size_t BlockLength = roundUp(length, BS);
     if (BlockLength == 0 && BS == 8)
       BlockLength = BS;
 
@@ -433,7 +433,7 @@ size_t _readcbc(FILE *fp,
     b += len1;
   }
 
-  size_t BlockLength = ((length + (BS - 1)) / BS) * BS;
+  size_t BlockLength = roundUp(length, BS);
   // Following is meant for lengths < BS,
   // but results in a block being read even
   // if length is zero. This is wasteful,
@@ -456,7 +456,7 @@ size_t _readcbc(FILE *fp,
       return 0;
     }
     numRead += nr;
-    for (unsigned int x = 0; x < BlockLength; x += BS) {
+    for (size_t x = 0; x < BlockLength; x += BS) {
       memcpy(tempcbc, b + x, BS);
       Algorithm->Decrypt(b + x, b + x);
       xormem(b + x, cbcbuffer, BS);

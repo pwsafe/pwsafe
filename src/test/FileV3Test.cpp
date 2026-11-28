@@ -155,6 +155,55 @@ TEST_F(FileV3Test, HeaderTest)
   EXPECT_NE(hdr1.m_yubi_sk, hdr2.m_yubi_sk);
 }
 
+TEST_F(FileV3Test, HeaderDuplicateYubiSK)
+{
+  // Regression case: a repeated YubiKey SK header field leaked the previous
+  // copy (run with ASan). The file must still open, with the last SK winning.
+  // sk1's first byte isn't a hex digit, so as a HDR_PSWDPOLICIES field
+  // it's read as a pre-3.28 YubiKey SK.
+  const unsigned char sk1[PWSfileHeader::YUBI_SK_LEN] = {
+    0xf0, 0xe1, 0xd2, 0xc3, 0xb4, 0xa5, 0x96, 0x87, 0x78, 0x69,
+    0x5a, 0x4b, 0x3c, 0x2d, 0x1e, 0x0f, 0xa0, 0xb1, 0xc2, 0xd3};
+  unsigned char sk2[PWSfileHeader::YUBI_SK_LEN];
+  memcpy(sk2, sk1, sizeof(sk2));
+  sk2[PWSfileHeader::YUBI_SK_LEN - 1] ^= 0xff;
+
+  const struct {
+    unsigned char type;
+    const unsigned char *sk;
+  } cases[] = {
+    {PWSfile::HDR_YUBI_SK, sk1},
+    {PWSfile::HDR_YUBI_SK, sk2},
+    {PWSfile::HDR_PSWDPOLICIES, sk1},
+    {PWSfile::HDR_PSWDPOLICIES, sk2},
+  };
+
+  for (size_t i = 0; i < NumberOf(cases); i++) {
+    SCOPED_TRACE(i);
+    PWSfileHeader hdr;
+    ASSERT_TRUE(hdr.SetYubiSK(sk1, PWSfileHeader::YUBI_SK_LEN));
+
+    PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+    fw.SetHeader(hdr);
+    // The extra SK field is passed as an "unknown" header field, which
+    // WriteHeader() then emits just before the regular HDR_YUBI_SK.
+    fw.SetUnknownHeaderFields(UnknownFieldList{
+      UnknownFieldEntry(cases[i].type, PWSfileHeader::YUBI_SK_LEN, cases[i].sk)});
+    ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+    ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+
+    PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
+    ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+    // The regular field, holding sk1, comes last
+    const PWSfileHeader hdr1 = fr.GetHeader();
+    ASSERT_NE(nullptr, hdr1.m_yubi_sk);
+    EXPECT_EQ(0, memcmp(sk1, hdr1.m_yubi_sk, PWSfileHeader::YUBI_SK_LEN));
+    // Close() verifies the HMAC, so read to the end first
+    EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+    EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+  }
+}
+
 TEST_F(FileV3Test, HeaderReadFailure)
 {
   PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
